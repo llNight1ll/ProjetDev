@@ -1,6 +1,9 @@
 import pygame
 
 from entities import Player
+pygame.joystick.init()
+joystick = pygame.joystick.Joystick(0)
+joystick.init()
 
 def controller(player, eye):
     
@@ -17,14 +20,21 @@ def controller(player, eye):
         if event.type == pygame.MOUSEBUTTONDOWN:
             eye.shoot()
                 
-        if event.type == pygame.JOYBUTTONDOWN:
-                print(event)
-        if event.type == pygame.JOYBUTTONUP:
-            print(event)
-        if event.type == pygame.JOYAXISMOTION:
-            print(event)
-        if event.type == pygame.JOYHATMOTION:
-            print(event)
+        if event.type == pygame.JOYBUTTONDOWN and event.button == 0:
+            player.jump()
+
+        if event.type == pygame.JOYAXISMOTION and event.axis == 5:
+            if event.axis > 0.9:
+                 player.move(70)
+
+        
+    if joystick.get_axis(0) < -0.03:
+        player.move(-player.x_velocity)
+    if joystick.get_axis(0) > 0.03:
+        player.move(player.x_velocity)
+
+
+    
  
      # Vérifie les touches enfoncées en continu
     keys = pygame.key.get_pressed()
