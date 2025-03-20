@@ -9,6 +9,7 @@ from engine.controller import controller
 from engine.engine import applyGravity
 
 from entities import Player
+from entities import Eye
 
 from entities import list_objects
 
@@ -43,6 +44,7 @@ offset_X = 0
 offset_Y = 0
 
 player = Player.Player()
+eye = Eye.Eye(player)
 
 running = True
 
@@ -52,11 +54,13 @@ while running:
 
     screen.blit(player.image, player.rect)
 
+    screen.blit(eye.image, eye.rect)
+
     for obj in list_objects:
 
         pygame.draw.rect(screen, obj.rgb, obj.object, obj.width)
 
-    controller(player)
+    controller(player, eye)
 
     
     applyGravity(player, list_objects)

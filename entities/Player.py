@@ -36,11 +36,3 @@ class Player(pygame.sprite.Sprite):
             self.y_velocity = self.jump_power  # Impulsion vers le haut (valeur négative)
             self.isGrounded = False
             detectCollison(self, list_objects, x_velocity=0, y_velocity = self.y_velocity)
-
-        
-
-    
-
-
-
-

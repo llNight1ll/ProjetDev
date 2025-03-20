@@ -2,7 +2,7 @@ import pygame
 
 from entities import Player
 
-def controller(player):
+def controller(player, eye):
     
 
     # handle quit button
@@ -14,6 +14,9 @@ def controller(player):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:  # Si la touche espace est pressée
                 player.jump()
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            eye.shoot()
                 
     
  
@@ -27,3 +30,8 @@ def controller(player):
     if keys[pygame.K_d]:
         player.move(player.x_velocity)
         player.frame_movement[0] = 1
+    
+    # Mise à jour de la position de l'œil autour du joueur
+    mouse_pos = pygame.mouse.get_pos()
+    eye.update(mouse_pos)
+    eye.move()
