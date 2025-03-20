@@ -5,9 +5,10 @@ class Eye(pygame.sprite.Sprite):
     def __init__(self, player):
         super().__init__()
         self.image = pygame.image.load('assets/eye.png')
+        self.image = pygame.transform.scale(self.image, (40, 40))  # Taille réduite
         self.rect = self.image.get_rect()
         self.player = player
-        self.radius = 50
+        self.radius = 70
         self.angle = 0
         self.speed = 15
         self.direction = pygame.Vector2(0, 0)

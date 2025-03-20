@@ -38,6 +38,10 @@ pygame.display.set_caption('Mygame')
 screen = pygame.display.set_mode((screen_widht-10, screen_height-50), pygame.RESIZABLE)
 clock = pygame.time.Clock() 
 
+pygame.joystick.init()
+joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
+
+
 background = pygame.transform.scale(pygame.image.load('assets/bck.png'), (screen_widht-10, screen_height-50))
 
 offset_X = 0

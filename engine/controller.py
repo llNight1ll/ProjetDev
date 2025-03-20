@@ -8,7 +8,6 @@ def controller(player, eye):
     # handle quit button
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
             pygame.quit()
         # Vérifie que l'événement est bien une touche pressée avant d'accéder à event.key
         if event.type == pygame.KEYDOWN:
@@ -18,7 +17,14 @@ def controller(player, eye):
         if event.type == pygame.MOUSEBUTTONDOWN:
             eye.shoot()
                 
-    
+        if event.type == pygame.JOYBUTTONDOWN:
+                print(event)
+        if event.type == pygame.JOYBUTTONUP:
+            print(event)
+        if event.type == pygame.JOYAXISMOTION:
+            print(event)
+        if event.type == pygame.JOYHATMOTION:
+            print(event)
  
      # Vérifie les touches enfoncées en continu
     keys = pygame.key.get_pressed()
