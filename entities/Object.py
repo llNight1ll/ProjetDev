@@ -17,11 +17,16 @@ class Object(pygame.sprite.Sprite):
 rect_x, rect_y = 300, 600
 rect_width, rect_height = 200, 50
 
-platform1 =  Object((0,255,0), pygame.Rect(rect_x, rect_y, rect_width, rect_height), 5) 
+platform1 =  Object((0,255,0), pygame.Rect(rect_x - 50, rect_y - 50, rect_width, rect_height), 5) 
 
-platform2 =  Object((0,255,0), pygame.Rect(rect_x + 400, rect_y - 100, rect_width, rect_height), 5) 
+platform2 =  Object((0,255,0), pygame.Rect(rect_x + 350, rect_y - 200, rect_width, rect_height), 5)
 
-wall1 =  Object((0,255,0), pygame.Rect(0, 0, 10, 720), 5) 
+platform3 =  Object((0,255,0), pygame.Rect(rect_x + 800, rect_y - 50, rect_width, rect_height), 5) 
+
+
+wall1 =  Object((0,0,0), pygame.Rect(0, 0, 1, 720), 1) 
+
+ground =  Object((100,100,225), pygame.Rect(0, 720 , 1920, 5), 5) 
 
 
 
@@ -30,7 +35,9 @@ wall1 =  Object((0,255,0), pygame.Rect(0, 0, 10, 720), 5)
 
 list_objects.append(platform1)
 list_objects.append(platform2)
+list_objects.append(platform3)
 list_objects.append(wall1)
+list_objects.append(ground)
 
 
 
