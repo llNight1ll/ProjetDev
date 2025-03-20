@@ -10,22 +10,22 @@ def detectCollison(self, list_objects,  x_velocity, y_velocity):
                 
     for obj in list_objects:
 
-        if self.rect.colliderect(obj):
+        if self.rect.colliderect(obj.object):
 
             if y_velocity > 0:
-                self.rect.bottom = obj.top
+                self.rect.bottom = obj.object.top
                 self.isGrounded = True
                 self.y_velocity = 0
 
             elif y_velocity < 0:
-                    self.rect.top = obj.bottom
+                    self.rect.top = obj.object.bottom
                     self.y_velocity = 0
 
             elif x_velocity > 0:
-                self.rect.right = obj.left
+                self.rect.right = obj.object.left
 
             elif x_velocity < 0:
-                self.rect.left = obj.right
+                self.rect.left = obj.object.right
 
 
 def applyGravity(self, list_objects):

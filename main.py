@@ -1,3 +1,5 @@
+import os
+
 import pygame
 
 from entities import Player
@@ -15,7 +17,13 @@ from entities import list_objects
 
 pygame.init()   
 
+#Called before init
+os.environ['SDL_VIDEO_CENTERED'] = '1' 
 
+#Called before set_mode
+info = pygame.display.Info()
+
+screen_widht, screen_height = info.current_w, info.current_h 
 
 WIDTH, HEIGHT = 1080, 720
 WHITE = (255, 255, 255)
@@ -26,18 +34,15 @@ RED = (255, 0, 0)
 # create game's window
 
 pygame.display.set_caption('Mygame')
-screen = pygame.display.set_mode((WIDTH,HEIGHT))
+screen = pygame.display.set_mode((screen_widht-10, screen_height-50), pygame.RESIZABLE)
 clock = pygame.time.Clock() 
 
-background = pygame.image.load('assets/bck.png')
+background = pygame.transform.scale(pygame.image.load('assets/bck.png'), (screen_widht-10, screen_height-50))
 
 offset_X = 0
 offset_Y = 0
 
 player = Player.Player()
-
-
-
 
 running = True
 
@@ -49,11 +54,7 @@ while running:
 
     for obj in list_objects:
 
-        pygame.draw.rect(screen, (0,255,0), obj, 5)
-
-
-
-
+        pygame.draw.rect(screen, obj.rgb, obj.object, obj.width)
 
     controller(player)
 
