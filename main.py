@@ -69,6 +69,10 @@ while running:
     
     applyGravity(player, list_objects)
 
+    if (player.frame_index !=  0):
+        player.play_animation(140,103,4)
+
+
 
     # Mettre à jour l'affichage
     pygame.display.flip()

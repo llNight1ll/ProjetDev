@@ -23,14 +23,17 @@ def controller(player, eye):
         if event.type == pygame.JOYBUTTONDOWN and event.button == 0:
             player.jump()
 
+        if event.type == pygame.JOYBUTTONDOWN and event.button == 2 and player.isAttacking == False:
+            player.attack()
+
         if event.type == pygame.JOYAXISMOTION and event.axis == 5:
             if event.axis > 0.9:
                  player.move(70)
 
         
-    if joystick.get_axis(0) < -0.03:
+    if joystick.get_axis(0) < -0.1:
         player.move(-player.x_velocity)
-    if joystick.get_axis(0) > 0.03:
+    if joystick.get_axis(0) > 0.1:
         player.move(player.x_velocity)
 
 
