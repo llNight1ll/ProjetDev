@@ -2,8 +2,12 @@ import pygame
 
 from entities import Player
 pygame.joystick.init()
-joystick = pygame.joystick.Joystick(0)
-joystick.init()
+
+
+if pygame.joystick.get_count() > 0:
+    joystick = pygame.joystick.Joystick(0)
+    joystick.init()
+
 
 def controller(player, eye):
     
@@ -16,6 +20,10 @@ def controller(player, eye):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:  # Si la touche espace est pressée
                 player.jump()
+            if event.key == pygame.K_LSHIFT:  # Si la touche espace est pressée
+                player.attack()
+
+        
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             eye.shoot()
@@ -30,11 +38,13 @@ def controller(player, eye):
             if event.axis > 0.9:
                  player.move(70)
 
+
+        if pygame.joystick.get_count() > 0:
         
-    if joystick.get_axis(0) < -0.1:
-        player.move(-player.x_velocity)
-    if joystick.get_axis(0) > 0.1:
-        player.move(player.x_velocity)
+            if joystick.get_axis(0) < -0.1:
+                player.move(-player.x_velocity)
+            if joystick.get_axis(0) > 0.1:
+                player.move(player.x_velocity)
 
 
     
