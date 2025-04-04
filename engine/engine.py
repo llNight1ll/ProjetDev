@@ -33,6 +33,7 @@ def applyGravity(self, list_objects):
     self.y_velocity += GRAVITY
     self.rect.y += self.y_velocity
 
+
     detectCollison(self, list_objects, x_velocity=0, y_velocity = self.y_velocity)
 
 
@@ -41,3 +42,10 @@ def applyGravity(self, list_objects):
         self.y_velocity = 0
         self.isGrounded = True
 
+def applyFriction(self):
+    if self.x_velocity <= 10 :
+        return
+    else :
+
+        self.x_velocity -= 1
+        self.rect.x += self.x_velocity

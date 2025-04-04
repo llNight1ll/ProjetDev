@@ -14,6 +14,7 @@ class Object(pygame.sprite.Sprite):
 
 
 
+
 rect_x, rect_y = 300, 600
 rect_width, rect_height = 200, 50
 

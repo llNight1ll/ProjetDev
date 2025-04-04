@@ -22,6 +22,8 @@ def controller(player, eye):
                 player.jump()
             if event.key == pygame.K_LSHIFT:  # Si la touche espace est pressée
                 player.attack()
+            if event.key == pygame.K_g:
+                player.move(player.frame_movement[0] *200)
 
         
         

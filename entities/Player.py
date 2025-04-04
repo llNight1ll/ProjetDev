@@ -1,6 +1,7 @@
 import pygame
 
 from engine.engine import detectCollison
+from engine.engine import applyFriction
 
 from entities import list_objects
 
@@ -44,6 +45,8 @@ class Player(pygame.sprite.Sprite):
 
         self.rect.x += x_velocity1
         detectCollison(self, list_objects, x_velocity = x_velocity1, y_velocity = 0)
+        applyFriction(self)
+
 
 
     def rotateSprite(self):
