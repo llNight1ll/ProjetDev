@@ -1,6 +1,7 @@
 import pygame
 import os
 import sys
+from scene import game
 
 pygame.init()
 
@@ -67,41 +68,95 @@ def getPlayer():
     global IsReady
     running = True
     while running:
+
+        #Check if all players are ready
+        start = True
+
+        if not IsReady :
+          start = False  
+        for status in IsReady:
+            if status is False:
+                start = False
+                break
+        if start :
+            game.game(screen,screen_width, screen_height, clock)
+            pygame.quit()
+            sys.exit()
+            break
+
+
         screen.fill((50, 50, 50))
         
-        # Dessiner les joueurs
+        # Draw players
         print(joysticks)
         for button in buttons :
             is_ready = IsReady[button.player_id]
-            if is_ready == True:
+            if is_ready is True:
                 button.draw(screen, LIGHT_GREEN)
-            elif is_ready == False:
+            elif is_ready is False:
                 button.draw(screen, WHITE)
         
         print(IsReady)
         pygame.display.flip()
         
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            #Check if a player is added
+
             elif event.type == pygame.JOYDEVICEADDED:
                 joystick = pygame.joystick.Joystick(event.device_index)
                 joysticks[joystick.get_instance_id()] = joystick
                 print(f"Manette connectée: {joystick.get_name()}")
                 update_players()
+
+            #Check if a player is removed  
             elif event.type == pygame.JOYDEVICEREMOVED:
                 if event.instance_id in joysticks:
                     del joysticks[event.instance_id]
                     print("Manette déconnectée")
                     update_players()
 
+            #Check if a player is  ready or not
             elif event.type == pygame.JOYBUTTONDOWN and event.button == 2:
                 if event.instance_id in joysticks:
                     ready(event.instance_id -1)
                     print("appui button 2")
-        
-    pygame.quit()
-    sys.exit()
+
+            elif event.type == pygame.KEYDOWN:
+
+                #Check if a keyboard player is added or removed
+                if event.key == pygame.K_a:
+                    if 'keyboard' not in joysticks.values():
+                        joysticks[len(joysticks)] = 'keyboard'
+                        update_players()
+                        break
+                    else:
+                        to_remove = None
+                        for index, device in joysticks.items():
+                            if device == 'keyboard':
+                                to_remove = index
+                                break
+
+                        if to_remove is not None:
+                            del joysticks[to_remove]
+                            update_players()
+
+
+
+                #Check if a keyboard player is ready or not
+
+                if event.key == pygame.K_e:
+                   for index, device in joysticks.items():
+                        if device == 'keyboard':
+                            ready(index)
+
+    
+    
+
+
 
 
 
