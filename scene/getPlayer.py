@@ -79,7 +79,7 @@ def getPlayer():
                 start = False
                 break
         if start :
-            game.game(screen,screen_width, screen_height, clock)
+            game.game(screen,screen_width, screen_height, clock, len(IsReady))
             pygame.quit()
             sys.exit()
             break

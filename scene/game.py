@@ -11,7 +11,7 @@ from entities import Eye
 
 from entities import list_objects
 
-def game(screen, screen_width, screen_height, clock):
+def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers):
     pygame.joystick.init()
     joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 
@@ -21,8 +21,13 @@ def game(screen, screen_width, screen_height, clock):
     offset_X = 0
     offset_Y = 0
 
-    player = Player.Player()
-    eye = Eye.Eye(player)
+    players = []
+    eyes = []
+    for i in range(numberOfReadyPlayers):
+        players.append(Player.Player())
+
+    for player in players:
+        eyes.append(Eye.Eye(player))
 
     running = True
 
@@ -30,23 +35,25 @@ def game(screen, screen_width, screen_height, clock):
         
         screen.blit(background, (offset_X,offset_Y))
 
-        screen.blit(player.image, player.rect)
+        for player in players:
+            screen.blit(player.image, player.rect)
 
-        screen.blit(eye.image, eye.rect)
+        for eye in eyes:
+            screen.blit(eye.image, eye.rect)
 
         for obj in list_objects:
 
             pygame.draw.rect(screen, obj.rgb, obj.object, obj.width)
 
-        controller(player, eye)
+        for i in range(numberOfReadyPlayers):
+            controller(players[i], eyes[i])
 
         
-        applyGravity(player, list_objects)
+        for i in range(numberOfReadyPlayers):
+            applyGravity(players[i], list_objects)
 
-        if (player.frame_index !=  0):
-            player.play_animation(140,103,4)
-
-
+            if (players[i].frame_index !=  0):
+                players[i].play_animation(140,103,4)
 
         # Mettre à jour l'affichage
         pygame.display.flip()
