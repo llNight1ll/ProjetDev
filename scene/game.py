@@ -58,3 +58,5 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers):
         # Mettre à jour l'affichage
         pygame.display.flip()
         clock.tick(60)  # 60 FPS
+
+        #print(players[0].rect.x, players[0].rect.y)

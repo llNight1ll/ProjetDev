@@ -5,6 +5,14 @@ from engine.engine import applyFriction
 
 from entities import list_objects
 
+SPAWN_POINTS = [
+    (300, 445),
+    (700, 295), 
+    (1150, 445),
+    (1550, 615), 
+    (700, 615), 
+    (70, 615) 
+]
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
