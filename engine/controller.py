@@ -16,13 +16,22 @@ def controller(player, eye):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+
         # Vérifie que l'événement est bien une touche pressée avant d'accéder à event.key
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:  # Si la touche espace est pressée
+            if event.key == pygame.K_SPACE and player.PlayerID == 0:
                 player.jump()
-            if event.key == pygame.K_LSHIFT:  # Si la touche espace est pressée
+            elif event.key == pygame.K_UP and player.PlayerID == 1:
+                player.jump()
+            
+            if event.key == pygame.K_LSHIFT and player.PlayerID == 0:
                 player.attack()
-            if event.key == pygame.K_g:
+            elif event.key == pygame.K_RSHIFT and player.PlayerID == 1:
+                player.attack()
+            
+            if event.key == pygame.K_g and player.PlayerID == 0:
+                player.move(player.frame_movement[0] *200)
+            elif event.key == pygame.K_RCTRL and player.PlayerID == 1:
                 player.move(player.frame_movement[0] *200)
 
         
@@ -42,7 +51,7 @@ def controller(player, eye):
 
 
         if pygame.joystick.get_count() > 0:
-        
+            joystick = pygame.joystick.Joystick(player.PlayerID)
             if joystick.get_axis(0) < -0.1:
                 player.move(-player.x_velocity)
             if joystick.get_axis(0) > 0.1:
@@ -53,14 +62,23 @@ def controller(player, eye):
  
      # Vérifie les touches enfoncées en continu
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_q]:
-        player.move(-player.x_velocity)
-        player.frame_movement[0] = -1
+    if player.PlayerID == 0:
+        if keys[pygame.K_q]:
+            player.move(-player.x_velocity)
+            player.frame_movement[0] = -1
         
     
-    if keys[pygame.K_d]:
-        player.move(player.x_velocity)
-        player.frame_movement[0] = 1
+        if keys[pygame.K_d]:
+            player.move(player.x_velocity)
+            player.frame_movement[0] = 1
+    else: # just tu try multiplayer system with keyboard (add hardcoded player in game for testing)
+        if keys[pygame.K_LEFT]:
+            player.move(-player.x_velocity)
+            player.frame_movement[0] = -1
+        
+        if keys[pygame.K_RIGHT]:
+            player.move(player.x_velocity)
+            player.frame_movement[0] = 1
     
     # Mise à jour de la position de l'œil autour du joueur
     mouse_pos = pygame.mouse.get_pos()

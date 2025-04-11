@@ -23,8 +23,8 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers):
 
     players = []
     eyes = []
-    for i in range(numberOfReadyPlayers):
-        players.append(Player.Player())
+    for i in range(numberOfReadyPlayers+1): # just tu try multiplayer system with keyboard (add hardcoded player in game for testing)
+        players.append(Player.Player(i))
 
     for player in players:
         eyes.append(Eye.Eye(player))
@@ -42,14 +42,13 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers):
             screen.blit(eye.image, eye.rect)
 
         for obj in list_objects:
-
             pygame.draw.rect(screen, obj.rgb, obj.object, obj.width)
 
-        for i in range(numberOfReadyPlayers):
+        for i in range(numberOfReadyPlayers+1): # just tu try multiplayer system with keyboard (add hardcoded player in game for testing)
             controller(players[i], eyes[i])
 
         
-        for i in range(numberOfReadyPlayers):
+        for i in range(numberOfReadyPlayers+1): # just tu try multiplayer system with keyboard (add hardcoded player in game for testing)
             applyGravity(players[i], list_objects)
 
             if (players[i].frame_index !=  0):

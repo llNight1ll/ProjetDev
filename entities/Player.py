@@ -15,7 +15,7 @@ SPAWN_POINTS = [
 ]
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, ID):
         super().__init__()
         self.health = 100
         self.max_health = 100
@@ -47,6 +47,7 @@ class Player(pygame.sprite.Sprite):
         self.frame_height = 64
 
         self.rect.x += 200  # Déplacer le joueur à X = 100
+        self.PlayerID = ID
         
 
     def move(self, x_velocity1):
