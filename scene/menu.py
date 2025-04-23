@@ -18,6 +18,7 @@ WIDTH, HEIGHT = 1080, 720
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
+joysticks = {}
 
 
 # create game's window
@@ -54,11 +55,11 @@ class Button:
 
     def check_click(self, pos):
         if self.rect.collidepoint(pos):
-            self.callback()
+            self.callback(joysticks)
 
 # Fonctions des boutons
-def play_game():
-    getPlayer.getPlayer()
+def play_game(joysticks):
+    getPlayer.getPlayer(joysticks)
 
 
 def open_settings():
@@ -78,6 +79,15 @@ buttons = [
 # Boucle principale
 def menu():
     running = True
+
+    pygame.joystick.init()
+    for i in range(pygame.joystick.get_count()):
+        joystick = pygame.joystick.Joystick(i)
+        joystick.init()
+        joysticks[joystick.get_instance_id()] = joystick
+        print(f"Manette détectée au démarrage : {joystick.get_name()}")
+
+
     while running:
         screen.fill((50, 50, 50))
         
