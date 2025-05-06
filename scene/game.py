@@ -11,9 +11,8 @@ from entities import Eye
 
 from entities import list_objects
 
-def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers):
+def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joysticks):
     pygame.joystick.init()
-    joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 
 
     background = pygame.transform.scale(pygame.image.load('assets/bck.png'), (screen_width-10, screen_height-50))
@@ -23,16 +22,27 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers):
 
     players = []
     eyes = []
-    for i in range(numberOfReadyPlayers+1): # just tu try multiplayer system with keyboard (add hardcoded player in game for testing)
-        players.append(Player.Player(i))
+
+    #Create keyboard players
+    #players.append(Player.Player(-1))
+    #players.append(Player.Player(-2))
+
+
+    #Create controller players
+    for js in joysticks:
+        players.append(Player.Player(joysticks[js].get_instance_id()))
+    
+    for player in players :
+        print(player.PlayerID)
 
     for player in players:
         eyes.append(Eye.Eye(player))
 
     running = True
 
+
     while running: 
-        
+
         screen.blit(background, (offset_X,offset_Y))
 
         for player in players:
@@ -44,15 +54,15 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers):
         for obj in list_objects:
             pygame.draw.rect(screen, obj.rgb, obj.object, obj.width)
 
-        for i in range(numberOfReadyPlayers+1): # just tu try multiplayer system with keyboard (add hardcoded player in game for testing)
-            controller(players[i], eyes[i])
 
-        
-        for i in range(numberOfReadyPlayers+1): # just tu try multiplayer system with keyboard (add hardcoded player in game for testing)
-            applyGravity(players[i], list_objects)
+        for player,eye in zip(players, eyes):
+            controller(players, eye)
 
-            if (players[i].frame_index !=  0):
-                players[i].play_animation(140,103,4)
+        for player in players:
+            applyGravity(player, list_objects)
+
+            if (player.frame_index !=  0):
+                player.play_animation(140,103,4)
 
         # Mettre à jour l'affichage
         pygame.display.flip()

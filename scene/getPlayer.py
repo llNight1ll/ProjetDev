@@ -75,7 +75,7 @@ def getPlayer(joysticks):
             start = False
     
         if start :
-            game.game(screen,screen_width, screen_height, clock, len(IsReady))
+            game.game(screen,screen_width, screen_height, clock, len(IsReady), joysticks)
             pygame.quit()
             sys.exit()
             break
@@ -85,10 +85,10 @@ def getPlayer(joysticks):
         
         # Draw players
         print(joysticks)
-
-        for joy in joysticks:
-            print(f"Instance ID  : {joysticks[joy].get_instance_id()}")
-            print(f"Nom          : {joysticks[joy].get_name()}")
+        if len(joysticks)>0:
+            for joy in joysticks:
+                print(f"Instance ID  : {joysticks[joy].get_instance_id()}")
+                print(f"Nom          : {joysticks[joy].get_name()}")
 
         for button in buttons :
             if button.instance_id in IsReady:
