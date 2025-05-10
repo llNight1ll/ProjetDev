@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.max_health = 100
         self.power = 10
-        self.x_velocity = 5
+        self.x_velocity = 10
         self.y_velocity = 10
         self.jump_power = -15
 
@@ -29,8 +29,8 @@ class Player(pygame.sprite.Sprite):
 
 
 
-        self.image_idle =  pygame.image.load('assets/player.png')
-        self.image_attack =  pygame.image.load('assets/player_sheet_attack.png')
+        self.image_idle =  pygame.image.load('assets/player.png').convert_alpha()
+        self.image_attack =  pygame.image.load('assets/player_sheet_attack.png').convert_alpha()
 
         self.frame_index = 0
 

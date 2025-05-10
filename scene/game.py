@@ -15,7 +15,7 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joyst
     pygame.joystick.init()
 
 
-    background = pygame.transform.scale(pygame.image.load('assets/bck.png'), (screen_width-10, screen_height-50))
+    background = pygame.transform.scale(pygame.image.load('assets/bck.png').convert(), (screen_width-10, screen_height-50))
 
     offset_X = 0
     offset_Y = 0
@@ -55,8 +55,7 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joyst
             pygame.draw.rect(screen, obj.rgb, obj.object, obj.width)
 
 
-        for player,eye in zip(players, eyes):
-            controller(players, eye)
+        controller(players, eye)
 
         for player in players:
             applyGravity(player, list_objects)
@@ -64,6 +63,7 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joyst
             if (player.frame_index !=  0):
                 player.play_animation(140,103,4)
 
+        print(clock.get_fps())
         # Mettre à jour l'affichage
         pygame.display.flip()
         clock.tick(60)  # 60 FPS
