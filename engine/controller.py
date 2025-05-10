@@ -8,16 +8,30 @@ def controller(players, eye, control_mode):
             pygame.quit()
 
         for player in players:
-            if control_mode == getPlayer.ControlMode.KEYBOARD and player.PlayerID == 'keyboard':
+            # Keyboard mode management
+            if control_mode == getPlayer.ControlMode.KEYBOARD :
+                # actions keys
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        player.jump()
-                    if event.key == pygame.K_LSHIFT:
-                        player.attack()
-                    if event.key == pygame.K_g:
-                        player.move(player.frame_movement[0] * 200)
-                    if event.type == pygame.MOUSEBUTTONDOWN:
-                        eye.shoot()
+                    # 1st player key
+                    if player.PlayerID == -1:
+                        if event.key == pygame.K_SPACE:
+                            player.jump()
+                        if event.key == pygame.K_LSHIFT:
+                            player.attack()
+                        if event.key == pygame.K_e:
+                            player.move(player.frame_movement[0] * 200)
+                        if event.key == pygame.K_a:
+                            eye.shoot()
+                    # 2nd player key
+                    if player.PlayerID == -2:
+                        if event.key == pygame.K_UP:
+                            player.jump()
+                        if event.key == pygame.K_RSHIFT:
+                            player.attack()
+                        if event.key == pygame.K_g:
+                            player.move(player.frame_movement[0] * 200)
+                        if event.key == pygame.K_RCTRL:
+                            eye.shoot()
 
             elif control_mode == getPlayer.ControlMode.CONTROLLER and player.PlayerID >= 0:
                 if hasattr(event, "instance_id") and event.instance_id == player.PlayerID:
@@ -28,17 +42,29 @@ def controller(players, eye, control_mode):
                     if event.type == pygame.JOYAXISMOTION and event.axis == 5:
                         player.move(70)
 
-    for player in players:
-        if control_mode == getPlayer.ControlMode.KEYBOARD and player.PlayerID == 'keyboard':
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_q]:
-                player.move(-player.x_velocity)
-                player.frame_movement[0] = -1
-            if keys[pygame.K_d]:
-                player.move(player.x_velocity)
-                player.frame_movement[0] = 1
 
-        elif control_mode == getPlayer.ControlMode.CONTROLLER and player.PlayerID >= 0:
+    for player in players:
+        if control_mode == getPlayer.ControlMode.KEYBOARD:
+            # player keyboard movement keys
+            keys = pygame.key.get_pressed()
+            # 1st player key
+            if player.PlayerID == -1:
+                if keys[pygame.K_q]:
+                    player.move(-player.x_velocity)
+                    player.frame_movement[0] = -1
+                if keys[pygame.K_d]:
+                    player.move(player.x_velocity)
+                    player.frame_movement[0] = 1
+            # 2nd player key
+            if player.PlayerID == -2:
+                if keys[pygame.K_LEFT]:
+                    player.move(-player.x_velocity)
+                    player.frame_movement[0] = -1
+                if keys[pygame.K_RIGHT]:
+                    player.move(player.x_velocity)
+                    player.frame_movement[0] = 1
+        
+        if control_mode == getPlayer.ControlMode.CONTROLLER and player.PlayerID >= 0:
             if pygame.joystick.get_count() > 0:
                 for i in range(pygame.joystick.get_count()):
                     joystick = pygame.joystick.Joystick(i)

@@ -23,11 +23,13 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joyst
     players = []
     eyes = []
 
+    #Create the 2 keyboard players
     if control_mode == getPlayer.ControlMode.KEYBOARD:
-        players.append(Player.Player('keyboard'))
+        players.append(Player.Player(-1))
+        players.append(Player.Player(-2))
     else:
         for js in joysticks:
-                players.append(Player.Player(joysticks[js].get_instance_id()))
+            players.append(Player.Player(joysticks[js].get_instance_id()))
     
     for player in players:
         print(f"Joueur créé avec l'ID: {player.PlayerID}")
@@ -58,7 +60,7 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joyst
             if (player.frame_index != 0):
                 player.play_animation(140, 103, 4)
 
-        print(clock.get_fps())
+        #print(clock.get_fps())
         pygame.display.flip()
         clock.tick(60)  # 60 FPS
 
