@@ -27,7 +27,6 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joyst
         players.append(Player.Player('keyboard'))
     else:
         for js in joysticks:
-            if isinstance(joysticks[js], pygame.joystick.Joystick):
                 players.append(Player.Player(joysticks[js].get_instance_id()))
     
     for player in players:
