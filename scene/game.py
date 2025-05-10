@@ -10,10 +10,10 @@ from entities import Player
 from entities import Eye
 
 from entities import list_objects
+from scene import getPlayer
 
-def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joysticks):
+def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joysticks, control_mode):
     pygame.joystick.init()
-
 
     background = pygame.transform.scale(pygame.image.load('assets/bck.png').convert(), (screen_width-10, screen_height-50))
 
@@ -23,27 +23,23 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joyst
     players = []
     eyes = []
 
-    #Create keyboard players
-    #players.append(Player.Player(-1))
-    #players.append(Player.Player(-2))
-
-
-    #Create controller players
-    for js in joysticks:
-        players.append(Player.Player(joysticks[js].get_instance_id()))
+    if control_mode == getPlayer.ControlMode.KEYBOARD:
+        players.append(Player.Player('keyboard'))
+    else:
+        for js in joysticks:
+            if isinstance(joysticks[js], pygame.joystick.Joystick):
+                players.append(Player.Player(joysticks[js].get_instance_id()))
     
-    for player in players :
-        print(player.PlayerID)
+    for player in players:
+        print(f"Joueur créé avec l'ID: {player.PlayerID}")
 
     for player in players:
         eyes.append(Eye.Eye(player))
 
     running = True
 
-
     while running: 
-
-        screen.blit(background, (offset_X,offset_Y))
+        screen.blit(background, (offset_X, offset_Y))
 
         for player in players:
             screen.blit(player.image, player.rect)
@@ -54,17 +50,16 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joyst
         for obj in list_objects:
             pygame.draw.rect(screen, obj.rgb, obj.object, obj.width)
 
-
-        controller(players, eye)
+        for i, player in enumerate(players):
+            controller(players, eyes[i], control_mode)
 
         for player in players:
             applyGravity(player, list_objects)
 
-            if (player.frame_index !=  0):
-                player.play_animation(140,103,4)
+            if (player.frame_index != 0):
+                player.play_animation(140, 103, 4)
 
         print(clock.get_fps())
-        # Mettre à jour l'affichage
         pygame.display.flip()
         clock.tick(60)  # 60 FPS
 

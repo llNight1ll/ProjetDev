@@ -3,9 +3,6 @@ import sys
 from scene import getPlayer
 import os
 
-
-pygame.init()   
-
 #Called before init
 os.environ['SDL_VIDEO_CENTERED'] = '1' 
 
@@ -19,7 +16,6 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
 joysticks = {}
-
 
 # create game's window
 
@@ -58,9 +54,11 @@ class Button:
             self.callback(joysticks)
 
 # Fonctions des boutons
-def play_game(joysticks):
-    getPlayer.getPlayer(joysticks)
+def play_game_controller(joysticks):
+    getPlayer.getPlayer(joysticks, getPlayer.ControlMode.CONTROLLER)
 
+def play_game_keyboard(joysticks):
+    getPlayer.getPlayer(joysticks, getPlayer.ControlMode.KEYBOARD)
 
 def open_settings():
     print("Settings button clicked")
@@ -71,22 +69,15 @@ def quit_game():
 
 # Création des instances de boutons
 buttons = [
-    Button("Play", 300, 200, 200, 50, play_game),
-    Button("Settings", 300, 300, 200, 50, open_settings),
-    Button("Quit", 300, 400, 200, 50, quit_game)
+    Button("Play with Controller", 300, 150, 400, 50, play_game_controller),
+    Button("Play with Keyboard", 300, 250, 400, 50, play_game_keyboard),
+    Button("Settings", 300, 350, 200, 50, open_settings),
+    Button("Quit", 300, 450, 200, 50, quit_game)
 ]
 
 # Boucle principale
 def menu():
     running = True
-
-    pygame.joystick.init()
-    for i in range(pygame.joystick.get_count()):
-        joystick = pygame.joystick.Joystick(i)
-        joystick.init()
-        joysticks[joystick.get_instance_id()] = joystick
-        print(f"Manette détectée au démarrage : {joystick.get_name()}")
-
 
     while running:
         screen.fill((50, 50, 50))
@@ -104,6 +95,15 @@ def menu():
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 for button in buttons:
                     button.check_click(event.pos)
+            elif event.type == pygame.JOYDEVICEADDED:
+                joystick = pygame.joystick.Joystick(event.device_index)
+                joystick.init()
+                joysticks[joystick.get_instance_id()] = joystick
+                print(f"Manette connectée : {joystick.get_name()}")
+            elif event.type == pygame.JOYDEVICEREMOVED:
+                if event.instance_id in joysticks:
+                    del joysticks[event.instance_id]
+                    print("Manette déconnectée")
     
     pygame.quit()
     sys.exit()

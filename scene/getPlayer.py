@@ -1,7 +1,26 @@
 import pygame
 import os
 import sys
-from scene import game
+from enum import Enum
+
+class ControlMode(Enum):
+    CONTROLLER = "controller"
+    KEYBOARD = "keyboard"
+
+class GameConfig:
+    def __init__(self):
+        self.control_mode = None
+        self.joysticks = {}
+        self.players = []
+        self.is_ready = {}
+
+    def set_control_mode(self, mode):
+        self.control_mode = mode
+        self.joysticks.clear()
+        self.players.clear()
+        self.is_ready.clear()
+
+game_config = GameConfig()
 
 pygame.init()
 
@@ -44,129 +63,76 @@ def update_players(joysticks):
     IsReady.clear()
     
     for i, instance_id in enumerate(joysticks):
-        buttons.append(Button(f"Player {i}", 300 * i, 600, 200, 50, instance_id, colors[i % len(colors)]))
+        if game_config.control_mode == ControlMode.KEYBOARD:
+            buttons.append(Button("Clavier", 300 * i, 600, 200, 50, instance_id, colors[i % len(colors)]))
+        else:
+            buttons.append(Button(f"Manette {i}", 300 * i, 600, 200, 50, instance_id, colors[i % len(colors)]))
         IsReady[instance_id] = False
 
-
-
 def ready(instance_id):
-
     if instance_id in IsReady:
         IsReady[instance_id] = not IsReady[instance_id]
         return IsReady[instance_id]
         
-
-
-            
-def getPlayer(joysticks):
+def getPlayer(joysticks, control_mode=None):
     global IsReady
     running = True
 
-    if len(joysticks) > 0 :
+    if control_mode:
+        game_config.set_control_mode(control_mode)
+    
+    if game_config.control_mode == ControlMode.CONTROLLER:
+        if len(joysticks) > 0:
+            update_players(joysticks)
+    elif game_config.control_mode == ControlMode.KEYBOARD:
+        # Initialiser un joueur clavier par défaut
+        joysticks[0] = 'keyboard'
         update_players(joysticks)
         
     while running:
-
         #Check if all players are ready
         start = True
-        if all(IsReady.values()) and len(IsReady) >0:
+        if all(IsReady.values()) and len(IsReady) > 0:
             start = True
-        else :
+        else:
             start = False
     
-        if start :
-            game.game(screen,screen_width, screen_height, clock, len(IsReady), joysticks)
+        if start:
+            # Import ici pour éviter l'import circulaire
+            from scene import game
+            game.game(screen, screen_width, screen_height, clock, len(IsReady), joysticks, game_config.control_mode)
             pygame.quit()
             sys.exit()
             break
 
-
         screen.fill((50, 50, 50))
         
-        # Draw players
-        print(joysticks)
-        if len(joysticks)>0:
-            for joy in joysticks:
-                print(f"Instance ID  : {joysticks[joy].get_instance_id()}")
-                print(f"Nom          : {joysticks[joy].get_name()}")
-
-        for button in buttons :
+        for button in buttons:
             if button.instance_id in IsReady:
-
                 is_ready = IsReady[button.instance_id]
                 if is_ready is True:
                     button.draw(screen, LIGHT_GREEN)
                 elif is_ready is False:
                     button.draw(screen, WHITE)
             
-        print(IsReady)
         pygame.display.flip()
         
-        joystick_names_seen = set()
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-            #Check if a player is added
-
-
-            elif event.type == pygame.JOYDEVICEADDED:
-                joystick = pygame.joystick.Joystick(event.device_index)
-                name = joystick.get_name()
-
-                if name not in joystick_names_seen:
-                    joystick_names_seen.add(name)
-                    instance_id = joystick.get_instance_id()
-                    joysticks[instance_id] = joystick
-                    print(f"Manette connectée : {name} (Instance {instance_id})")
-                    update_players(joysticks)
-                else:
-                    print(f"Manette ignorée : {name}")
-
-            #Check if a player is removed  
-            elif event.type == pygame.JOYDEVICEREMOVED:
-                if event.instance_id in joysticks:
-                    del joysticks[event.instance_id]
-                    print("Manette déconnectée")
-
-                    update_players(joysticks)
-
-            #Check if a player is  ready or not
+            #Check if a player is ready or not
             elif event.type == pygame.JOYBUTTONDOWN and event.button == 2:
-                if event.instance_id in joysticks:
+                if event.instance_id in joysticks and game_config.control_mode == ControlMode.CONTROLLER:
                     ready(event.instance_id)
                     print("appui button 2")
 
             elif event.type == pygame.KEYDOWN:
-
-                #Check if a keyboard player is added or removed
-                if event.key == pygame.K_a:
-                    if 'keyboard' not in joysticks.values():
-                        joysticks[len(joysticks)] = 'keyboard'
-                        update_players(joysticks)
-                        break
-                    else:
-                        to_remove = None
-                        for index, device in joysticks.items():
-                            if device == 'keyboard':
-                                to_remove = index
-                                break
-
-                        if to_remove is not None:
-                            del joysticks[to_remove]
-                            update_players(joysticks)
-
-
-
                 #Check if a keyboard player is ready or not
-
                 if event.key == pygame.K_e:
-                   for index, device in joysticks.items():
+                    for index, device in joysticks.items():
                         if device == 'keyboard':
                             ready(index)
-
-
 
 class Button:
     def __init__(self, text, x, y, width, height, instance_id, color):
@@ -187,8 +153,6 @@ class Button:
     def check_click(self, pos):
         if self.rect.collidepoint(pos):
             return
-
-
 
 if __name__ == "__main__":
     getPlayer()
