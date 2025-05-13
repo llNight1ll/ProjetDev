@@ -5,6 +5,8 @@ from engine.engine import applyFriction
 
 from entities import list_objects
 
+import random
+
 SPAWN_POINTS = [
     (300, 445),
     (700, 295), 
@@ -23,9 +25,10 @@ class Player(pygame.sprite.Sprite):
         self.x_velocity = 5
         self.y_velocity = 10
         self.jump_power = -15
+        self.bumpPower = 10
 
         self.timer = 0
-
+        self.wasBumped = False
 
 
 
@@ -46,7 +49,10 @@ class Player(pygame.sprite.Sprite):
         self.frame_width = 64
         self.frame_height = 64
 
-        self.rect.x += 200  # Déplacer le joueur à X = 100
+        self.spawnPointID = random.randint(0, len(SPAWN_POINTS) - 1)
+        self.rect.x = SPAWN_POINTS[self.spawnPointID][0]
+        self.rect.y = SPAWN_POINTS[self.spawnPointID][1]
+
         self.PlayerID = ID
         
 

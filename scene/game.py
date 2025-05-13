@@ -5,6 +5,7 @@ from entities import Player
 from engine.controller import controller
 
 from engine.engine import applyGravity
+from engine.engine import checkPlayerCollision
 
 from entities import Player
 from entities import Eye
@@ -12,7 +13,7 @@ from entities import Eye
 from entities import list_objects
 from scene import getPlayer
 
-def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joysticks, control_mode):
+def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
     pygame.joystick.init()
 
     background = pygame.transform.scale(pygame.image.load('assets/bck.png').convert(), (screen_width-10, screen_height-50))
@@ -59,6 +60,8 @@ def game(screen, screen_width, screen_height, clock, numberOfReadyPlayers, joyst
 
             if (player.frame_index != 0):
                 player.play_animation(140, 103, 4)
+
+        checkPlayerCollision(players)
 
         #print(clock.get_fps())
         pygame.display.flip()

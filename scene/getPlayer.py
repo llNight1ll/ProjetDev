@@ -101,7 +101,7 @@ def getPlayer(joysticks, control_mode=None):
         if start or (game_config.control_mode == ControlMode.KEYBOARD):
             # Import ici pour éviter l'import circulaire
             from scene import game
-            game.game(screen, screen_width, screen_height, clock, len(IsReady), joysticks, game_config.control_mode)
+            game.game(screen, screen_width, screen_height, clock, joysticks, game_config.control_mode)
             pygame.quit()
             sys.exit()
             break

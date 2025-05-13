@@ -49,3 +49,21 @@ def applyFriction(self):
 
         self.x_velocity -= 1
         self.rect.x += self.x_velocity
+
+#fonction that check collisons between players
+def checkPlayerCollision(Players):
+    for i, player in enumerate(Players):
+        for j, other_player in enumerate(Players):
+            # don't check himself
+            if i != j:
+                #check for colision
+                if player.rect.colliderect(other_player.rect) and not other_player.wasBumped:  
+                    #check if the player is on the left or right of the other player
+                    if player.rect.x < other_player.rect.x:  
+                        other_player.rect.x += 6 * player.bumpPower
+                    else:
+                        other_player.rect.x -= 6 * player.bumpPower
+                    #push player up 
+                    other_player.rect.y -= 2 * player.bumpPower
+
+
