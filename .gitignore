@@ -1,7 +1,15 @@
 # Python bytecode
-__pycache__/
-*.py[cod]
-*$py.class
+engine/__pycache__/
+engine/*.py[cod]
+engine/*$py.class
+
+entities/__pycache__/
+entities/*.py[cod]
+entities/*$py.class
+
+scene/__pycache__/
+scene/*.py[cod]
+scene/*$py.class
 
 # Distribution / packaging
 dist/
