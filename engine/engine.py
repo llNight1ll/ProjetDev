@@ -30,25 +30,26 @@ def detectCollison(self, list_objects,  x_velocity, y_velocity):
 
 def applyGravity(self, list_objects):
      
-    self.y_velocity += GRAVITY
-    self.rect.y += self.y_velocity
+    self.currentSpeed.y += GRAVITY
 
-
-    detectCollison(self, list_objects, x_velocity=0, y_velocity = self.y_velocity)
-
+    detectCollison(self, list_objects, x_velocity=0, y_velocity = self.currentSpeed.y)
 
     if self.rect.bottom >= GROUND_Y:
         self.rect.bottom = GROUND_Y
-        self.y_velocity = 0
+        self.currentSpeed.y = 0
         self.isGrounded = True
 
 def applyFriction(self):
-    if self.x_velocity <= 10 :
+    # stop if to slow
+    if abs(self.currentSpeed.x) < 0.1:
+        self.currentSpeed.x = 0
         return
-    else :
+    
+    self.currentSpeed.x *= self.x_velocity
 
-        self.x_velocity -= 1
-        self.rect.x += self.x_velocity
+    # max speed handle
+    if abs(self.currentSpeed.x) > self.max_x_velocity:
+        self.currentSpeed.x = self.max_x_velocity * (1 if self.currentSpeed.x > 0 else -1)
 
 #fonction that check collisons between players
 def checkPlayerCollision(Players):

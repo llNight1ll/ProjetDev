@@ -50,18 +50,18 @@ def controller(players, eye, control_mode):
             # 1st player key
             if player.PlayerID == -1:
                 if keys[pygame.K_q]:
-                    player.move(-player.x_velocity)
+                    player.move(-1)
                     player.frame_movement[0] = -1
                 if keys[pygame.K_d]:
-                    player.move(player.x_velocity)
+                    player.move(1)
                     player.frame_movement[0] = 1
             # 2nd player key
             if player.PlayerID == -2:
                 if keys[pygame.K_LEFT]:
-                    player.move(-player.x_velocity)
+                    player.move(-1)
                     player.frame_movement[0] = -1
                 if keys[pygame.K_RIGHT]:
-                    player.move(player.x_velocity)
+                    player.move(1)
                     player.frame_movement[0] = 1
         
         if control_mode == getPlayer.ControlMode.CONTROLLER and player.PlayerID >= 0:
@@ -70,9 +70,9 @@ def controller(players, eye, control_mode):
                     joystick = pygame.joystick.Joystick(i)
                     if joystick.get_instance_id() == player.PlayerID:
                         if joystick.get_axis(0) < -0.1:
-                            player.move(-player.x_velocity)
+                            player.move(-1)
                         elif joystick.get_axis(0) > 0.1:
-                            player.move(player.x_velocity)
+                            player.move(1)
 
     # Mise à jour de la position de l'œil autour du joueur
     mouse_pos = pygame.mouse.get_pos()

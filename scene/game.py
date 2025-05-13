@@ -44,6 +44,9 @@ def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
         screen.blit(background, (offset_X, offset_Y))
 
         for player in players:
+            player.update()
+
+        for player in players:
             screen.blit(player.image, player.rect)
 
         for eye in eyes:

@@ -1,5 +1,7 @@
 import pygame
 
+from pygame.math import Vector2
+
 from engine.engine import detectCollison
 from engine.engine import applyFriction
 
@@ -22,7 +24,8 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.max_health = 100
         self.power = 10
-        self.x_velocity = 5
+        self.x_velocity = 0.4
+        self.max_x_velocity = 5
         self.y_velocity = 10
         self.jump_power = -15
         self.bumpPower = 10
@@ -30,7 +33,7 @@ class Player(pygame.sprite.Sprite):
         self.timer = 0
         self.wasBumped = False
 
-
+        self.currentSpeed = Vector2(0, 0)
 
         self.image_idle =  pygame.image.load('assets/player.png').convert_alpha()
         self.image_attack =  pygame.image.load('assets/player_sheet_attack.png').convert_alpha()
@@ -56,13 +59,20 @@ class Player(pygame.sprite.Sprite):
         self.PlayerID = ID
         
 
-    def move(self, x_velocity1):
+    def update(self):
+        # move player at each frame
+        self.rect.x += self.currentSpeed.x
+        self.rect.y += self.currentSpeed.y
 
-        self.rect.x += x_velocity1
-        detectCollison(self, list_objects, x_velocity = x_velocity1, y_velocity = 0)
+        # check if player is colliding with an object
+        detectCollison(self, list_objects, self.currentSpeed.x, 0)
+        # make the vector slow down on X axis
         applyFriction(self)
 
-
+    def move(self, direction):
+        target_speed = direction * self.max_x_velocity
+        self.currentSpeed.x += (target_speed - self.currentSpeed.x) * self.x_velocity
+        
 
     def rotateSprite(self):
         self.image = pygame.transform.flip(self.image, True, False)
