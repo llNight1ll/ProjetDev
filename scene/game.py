@@ -44,9 +44,6 @@ def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
         screen.blit(background, (offset_X, offset_Y))
 
         for player in players:
-            player.update()
-
-        for player in players:
             screen.blit(player.image, player.rect)
 
         for eye in eyes:
@@ -58,11 +55,11 @@ def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
         for i, player in enumerate(players):
             controller(players, eyes[i], control_mode)
 
-        for player in players:
-            applyGravity(player, list_objects)
-
             if (player.frame_index != 0):
                 player.play_animation(140, 103, 4)
+        
+        for player in players:
+            player.update()
 
         checkPlayerCollision(players)
 

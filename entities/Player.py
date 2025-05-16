@@ -4,7 +4,7 @@ from pygame.math import Vector2
 
 from engine.engine import detectCollison
 from engine.engine import applyFriction
-
+from engine.engine import applyGravity
 from entities import list_objects
 
 import random
@@ -24,10 +24,10 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.max_health = 100
         self.power = 10
-        self.x_velocity = 0.4
+        self.x_velocity = 0.7
         self.max_x_velocity = 5
         self.y_velocity = 10
-        self.jump_power = -15
+        self.jump_power = 15
         self.bumpPower = 10
 
         self.timer = 0
@@ -69,6 +69,8 @@ class Player(pygame.sprite.Sprite):
         # make the vector slow down on X axis
         applyFriction(self)
 
+        applyGravity(self, list_objects)
+
     def move(self, direction):
         target_speed = direction * self.max_x_velocity
         self.currentSpeed.x += (target_speed - self.currentSpeed.x) * self.x_velocity
@@ -79,9 +81,8 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self):
         if self.isGrounded:
-            self.y_velocity = self.jump_power  # Impulsion vers le haut (valeur négative)
+            self.currentSpeed.y = -self.jump_power
             self.isGrounded = False
-            detectCollison(self, list_objects, x_velocity=0, y_velocity = self.y_velocity)
     
     def attack(self):
         self.isAttacking = True

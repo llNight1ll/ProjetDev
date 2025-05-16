@@ -1,35 +1,33 @@
 import pygame
 
 
-GRAVITY = 0.5  
+GRAVITY = 0.5
 GROUND_Y = 720
 
 
 
-def detectCollison(self, list_objects,  x_velocity, y_velocity):
-                
+def detectCollison(self, list_objects, x_velocity, y_velocity):
     for obj in list_objects:
-
         if self.rect.colliderect(obj.object):
-
-            if y_velocity > 0:
+            if y_velocity > 0: 
                 self.rect.bottom = obj.object.top
                 self.isGrounded = True
-                self.y_velocity = 0
+                self.currentSpeed.y = 0 
 
-            elif y_velocity < 0:
-                    self.rect.top = obj.object.bottom
-                    self.y_velocity = 0
+            elif y_velocity < 0:  
+                self.rect.top = obj.object.bottom
+                self.currentSpeed.y = 0  
 
-            elif x_velocity > 0:
+            elif x_velocity > 0:  
                 self.rect.right = obj.object.left
+                self.currentSpeed.x = 0
 
-            elif x_velocity < 0:
+            elif x_velocity < 0: 
                 self.rect.left = obj.object.right
+                self.currentSpeed.x = 0 
 
 
 def applyGravity(self, list_objects):
-     
     self.currentSpeed.y += GRAVITY
 
     detectCollison(self, list_objects, x_velocity=0, y_velocity = self.currentSpeed.y)
