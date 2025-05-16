@@ -4,7 +4,6 @@ from entities import Player
 
 from engine.controller import controller
 
-from engine.engine import applyGravity
 from engine.engine import checkPlayerCollision
 
 from entities import Player
@@ -43,6 +42,12 @@ def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
     while running: 
         screen.blit(background, (offset_X, offset_Y))
 
+        # Gestion des contrôles pour tous les joueurs
+        controller(players, control_mode)
+
+        for player in players:
+            player.update()
+
         for player in players:
             screen.blit(player.image, player.rect)
 
@@ -52,14 +57,9 @@ def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
         for obj in list_objects:
             pygame.draw.rect(screen, obj.rgb, obj.object, obj.width)
 
-        for i, player in enumerate(players):
-            controller(players, eyes[i], control_mode)
-
+        for player in players:
             if (player.frame_index != 0):
                 player.play_animation(140, 103, 4)
-        
-        for player in players:
-            player.update()
 
         checkPlayerCollision(players)
 

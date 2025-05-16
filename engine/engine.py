@@ -3,7 +3,7 @@ import pygame
 
 GRAVITY = 0.5
 GROUND_Y = 720
-
+FRICTION = 0.92
 
 
 def detectCollison(self, list_objects, x_velocity, y_velocity):
@@ -43,7 +43,7 @@ def applyFriction(self):
         self.currentSpeed.x = 0
         return
     
-    self.currentSpeed.x *= self.x_velocity
+    self.currentSpeed.x *= FRICTION
 
     # max speed handle
     if abs(self.currentSpeed.x) > self.max_x_velocity:
@@ -56,13 +56,17 @@ def checkPlayerCollision(Players):
             # don't check himself
             if i != j:
                 #check for colision
-                if player.rect.colliderect(other_player.rect) and not other_player.wasBumped:  
-                    #check if the player is on the left or right of the other player
-                    if player.rect.x < other_player.rect.x:  
-                        other_player.rect.x += 6 * player.bumpPower
-                    else:
-                        other_player.rect.x -= 6 * player.bumpPower
-                    #push player up 
-                    other_player.rect.y -= 2 * player.bumpPower
+                if player.rect.colliderect(other_player.rect) and not player.wasBumped:  
+                    #check if the player should push of be pushed
+                    if abs(player.currentSpeed.x) > abs(other_player.currentSpeed.x):
+                        if player.rect.x < other_player.rect.x:
+                            other_player.currentSpeed.x += abs(player.currentSpeed.x) * player.bumpPower
+                        else:
+                            other_player.currentSpeed.x -= abs(player.currentSpeed.x) * player.bumpPower
+                            
+                        #push player up 
+                        other_player.currentSpeed.y -= player.bumpPower
+                        other_player.isGrounded = False
+                        other_player.wasBumped = True
 
 

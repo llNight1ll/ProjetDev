@@ -7,6 +7,8 @@ from engine.engine import applyFriction
 from engine.engine import applyGravity
 from entities import list_objects
 
+from engine.controller import controller
+
 import random
 
 SPAWN_POINTS = [
@@ -24,14 +26,17 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.max_health = 100
         self.power = 10
-        self.x_velocity = 0.7
-        self.max_x_velocity = 5
+        self.x_velocity = 0.2
+        self.max_x_velocity = 11
         self.y_velocity = 10
+        self.max_y_velocity = 11
         self.jump_power = 15
-        self.bumpPower = 10
+        self.bumpPower = 3
 
         self.timer = 0
         self.wasBumped = False
+        self.bumpCooldown = 0
+        self.bumpCooldownTime = 30
 
         self.currentSpeed = Vector2(0, 0)
 
@@ -61,19 +66,34 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         # move player at each frame
-        self.rect.x += self.currentSpeed.x
+        if self.currentSpeed.x > self.max_x_velocity*3:
+            self.rect.x += self.max_x_velocity*3
+        else:
+            self.rect.x += self.currentSpeed.x
         self.rect.y += self.currentSpeed.y
+
+        if self.currentSpeed.y > self.max_y_velocity:
+            self.currentSpeed.y = self.max_y_velocity
 
         # check if player is colliding with an object
         detectCollison(self, list_objects, self.currentSpeed.x, 0)
         # make the vector slow down on X axis
-        applyFriction(self)
+        if not self.wasBumped:
+            applyFriction(self)
+            applyGravity(self, list_objects)
 
-        applyGravity(self, list_objects)
+        if self.PlayerID == -1:
+            print(self.currentSpeed.x)
+
+        if self.wasBumped:
+            self.bumpCooldown += 1
+            if self.bumpCooldown > self.bumpCooldownTime:
+                self.wasBumped = False
+                self.bumpCooldown = 0
 
     def move(self, direction):
         target_speed = direction * self.max_x_velocity
-        self.currentSpeed.x += (target_speed - self.currentSpeed.x) * self.x_velocity
+        self.currentSpeed.x += (target_speed - self.currentSpeed.x) * self.x_velocity 
         
 
     def rotateSprite(self):
