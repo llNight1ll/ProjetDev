@@ -34,11 +34,11 @@ ground =  Object((100,100,225), pygame.Rect(0, 720 , 1920, 5), 5)
 
 
 
-#list_objects.append(platform1)
-#list_objects.append(platform2)
-#list_objects.append(platform3)
-#list_objects.append(wall1)
-#list_objects.append(ground)
+list_objects.append(platform1)
+list_objects.append(platform2)
+list_objects.append(platform3)
+list_objects.append(wall1)
+list_objects.append(ground)
 
 
 

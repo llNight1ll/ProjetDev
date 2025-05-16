@@ -1,41 +1,34 @@
 import pygame
 
+from entities import list_objects
+
 
 GRAVITY = 0.5
-GROUND_Y = 720
 FRICTION = 0.92
 
 
-def detectCollison(self, list_objects, x_velocity, y_velocity):
+def detectCollison(self):
+    CollisionTestRect = self.rect.copy()
+    CollisionTestRect.x += self.CurrentFrameDistance.x
+
     for obj in list_objects:
-        if self.rect.colliderect(obj.object):
-            if y_velocity > 0: 
-                self.rect.bottom = obj.object.top
+        if CollisionTestRect.colliderect(obj.object):
+            CollisionTestRect.x -= self.CurrentFrameDistance.x
+            self.CurrentFrameDistance.x = 0
+    
+    CollisionTestRect.y += self.CurrentFrameDistance.y
+
+    for obj in list_objects:
+        if CollisionTestRect.colliderect(obj.object):
+            if self.CurrentFrameDistance.y > 0:
                 self.isGrounded = True
-                self.currentSpeed.y = 0 
-
-            elif y_velocity < 0:  
-                self.rect.top = obj.object.bottom
-                self.currentSpeed.y = 0  
-
-            elif x_velocity > 0:  
-                self.rect.right = obj.object.left
-                self.currentSpeed.x = 0
-
-            elif x_velocity < 0: 
-                self.rect.left = obj.object.right
-                self.currentSpeed.x = 0 
+            self.CurrentFrameDistance.y = 0
 
 
-def applyGravity(self, list_objects):
+def applyGravity(self):
     self.currentSpeed.y += GRAVITY
 
-    detectCollison(self, list_objects, x_velocity=0, y_velocity = self.currentSpeed.y)
-
-    if self.rect.bottom >= GROUND_Y:
-        self.rect.bottom = GROUND_Y
-        self.currentSpeed.y = 0
-        self.isGrounded = True
+    detectCollison(self)
 
 def applyFriction(self):
     # stop if to slow

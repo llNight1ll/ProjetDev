@@ -40,6 +40,8 @@ class Player(pygame.sprite.Sprite):
 
         self.currentSpeed = Vector2(0, 0)
 
+        self.CurrentFrameDistance = Vector2(0, 0)
+
         self.image_idle =  pygame.image.load('assets/player.png').convert_alpha()
         self.image_attack =  pygame.image.load('assets/player_sheet_attack.png').convert_alpha()
 
@@ -67,20 +69,21 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         # move player at each frame
         if self.currentSpeed.x > self.max_x_velocity*3:
-            self.rect.x += self.max_x_velocity*3
+            self.CurrentFrameDistance.x += self.max_x_velocity*3
         else:
-            self.rect.x += self.currentSpeed.x
-        self.rect.y += self.currentSpeed.y
+            self.CurrentFrameDistance.x += self.currentSpeed.x
+        self.CurrentFrameDistance.y += self.currentSpeed.y
 
         if self.currentSpeed.y > self.max_y_velocity:
             self.currentSpeed.y = self.max_y_velocity
 
-        # check if player is colliding with an object
-        detectCollison(self, list_objects, self.currentSpeed.x, 0)
         # make the vector slow down on X axis
         if not self.wasBumped:
             applyFriction(self)
-            applyGravity(self, list_objects)
+            applyGravity(self)
+
+        # check if player is colliding with an object
+        detectCollison(self)
 
         if self.PlayerID == -1:
             print(self.currentSpeed.x)
@@ -90,6 +93,11 @@ class Player(pygame.sprite.Sprite):
             if self.bumpCooldown > self.bumpCooldownTime:
                 self.wasBumped = False
                 self.bumpCooldown = 0
+            
+        self.rect.x += self.CurrentFrameDistance.x
+        self.rect.y += self.CurrentFrameDistance.y
+
+        self.CurrentFrameDistance = Vector2(0, 0)
 
     def move(self, direction):
         target_speed = direction * self.max_x_velocity
