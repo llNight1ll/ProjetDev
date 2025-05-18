@@ -1,36 +1,11 @@
 import pygame
 import sys
 from scene import getPlayer
-import os
+from scene.settings import settings
 
-#Called before init
-os.environ['SDL_VIDEO_CENTERED'] = '1' 
+from scene.screen import *
 
-#Called before set_mode
-info = pygame.display.Info()
-
-screen_width, screen_height = info.current_w, info.current_h 
-
-WIDTH, HEIGHT = 1080, 720
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-
-joysticks = {}
-
-# create game's window
-
-pygame.display.set_caption('Mygame')
-screen = pygame.display.set_mode((screen_width-10, screen_height-50), pygame.RESIZABLE)
-clock = pygame.time.Clock() 
-
-# Couleurs
-WHITE = (255, 255, 255)
-GRAY = (170, 170, 170)
-DARK_GRAY = (100, 100, 100)
-pygame.font.init()
-
-# Police et taille
-font = pygame.font.Font(None, 50)
+screen = pygame.display.set_mode((WIDTH, HEIGHT), RESIZABLE)
 
 # Création des boutons
 class Button:
@@ -47,11 +22,21 @@ class Button:
         screen.blit(text_surface, text_rect)
 
     def check_hover(self, pos):
-        self.color = DARK_GRAY if self.rect.collidepoint(pos) else GRAY
+        return
+
+    def isHoverController(self, action):
+        if action is True:
+            self.color = DARK_GRAY
+        else :
+           self.color = GRAY
 
     def check_click(self, pos):
         if self.rect.collidepoint(pos):
             self.callback(joysticks)
+    
+    def modifyRes(self, size):
+        self.rect = pygame.Rect(size[0] // 2 -  self.rect.width// 2, self.rect.y, self.rect.width, self.rect.height)
+        
 
 # Fonctions des boutons
 def play_game_controller(joysticks):
@@ -60,24 +45,59 @@ def play_game_controller(joysticks):
 def play_game_keyboard(joysticks):
     getPlayer.getPlayer(joysticks, getPlayer.ControlMode.KEYBOARD)
 
-def open_settings():
-    print("Settings button clicked")
+def open_settings(joysticks):
+    settings(screen, WIDTH, joysticks)
 
 def quit_game():
     pygame.quit()
     sys.exit()
 
-# Création des instances de boutons
+# Create buttons for default resolution
 buttons = [
-    Button("Play with Controller", 300, 150, 400, 50, play_game_controller),
-    Button("Play with Keyboard", 300, 250, 400, 50, play_game_keyboard),
-    Button("Settings", 300, 350, 200, 50, open_settings),
-    Button("Quit", 300, 450, 200, 50, quit_game)
+    Button("Play with Controller", WIDTH // 2 - 400//2 , 150, 400, 50, play_game_controller),
+    Button("Play with Keyboard", WIDTH // 2 - 400//2, 250, 400, 50, play_game_keyboard),
+    Button("Settings", WIDTH // 2 - 200//2, 350, 200, 50, open_settings),
+    Button("Quit", WIDTH // 2 - 200//2, 450, 200, 50, quit_game)
 ]
 
-# Boucle principale
+buttonSelected = 0
+buttons[buttonSelected].isHoverController(True)
+
+def selectButton(action) :
+    print("appuie " + str(action))
+    global buttonSelected
+    if action == 0:
+        buttons[buttonSelected].callback(joysticks)
+    if action == 1:
+        buttons[buttonSelected].isHoverController(False)
+        if buttonSelected == len(buttons)-1 :
+            buttonSelected = 0
+            buttons[buttonSelected].isHoverController(True)
+
+        else :
+            buttonSelected += 1
+            buttons[buttonSelected].isHoverController(True)
+            print(buttonSelected)
+
+
+    elif action == -1:
+        buttons[buttonSelected].isHoverController(False)
+
+        if buttonSelected == 0 :
+            buttonSelected = len(buttons) -1
+            buttons[buttonSelected].isHoverController(True)
+
+        else :
+            buttonSelected -= 1
+            buttons[buttonSelected].isHoverController(True)
+
+    
+    
+
 def menu():
+    global screen
     running = True
+    
 
     while running:
         screen.fill((50, 50, 50))
@@ -90,20 +110,45 @@ def menu():
         pygame.display.flip()
         
         for event in pygame.event.get():
+            print(event)
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == VIDEORESIZE:
+                screen = pygame.display.set_mode(event.size, RESIZABLE)
+                for button in buttons:
+                    button.modifyRes(event.size)
+    
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 for button in buttons:
                     button.check_click(event.pos)
+
             elif event.type == pygame.JOYDEVICEADDED:
                 joystick = pygame.joystick.Joystick(event.device_index)
                 joystick.init()
                 joysticks[joystick.get_instance_id()] = joystick
                 print(f"Manette connectée : {joystick.get_name()}")
+
             elif event.type == pygame.JOYDEVICEREMOVED:
                 if event.instance_id in joysticks:
                     del joysticks[event.instance_id]
                     print("Manette déconnectée")
+                
+            elif event.type == pygame.JOYBUTTONDOWN and event.button == 0:
+                selectButton(0)
+
+            elif event.type == pygame.JOYBUTTONDOWN and event.button == 12:
+                selectButton(1)
+
+            elif event.type == pygame.JOYBUTTONDOWN and event.button == 11:
+                selectButton(-1)
+
+            elif event.type == pygame.JOYHATMOTION:
+                if event.value == (0, -1):
+                    selectButton(1)
+                elif event.value == (0, 1):
+                    selectButton(-1)
+
+
     
     pygame.quit()
     sys.exit()
