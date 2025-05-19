@@ -12,6 +12,35 @@ from entities import Eye
 from entities import list_objects
 from scene import getPlayer
 
+def draw_player_ui(screen, players):    
+    ui_y = 1080 - 150 - 40
+    
+    total_width = len(players) * 400
+    start_x = (1920 - total_width) // 2
+    
+    font = pygame.font.Font(None, 48)
+
+    for i, player in enumerate(players):
+        # column position
+        column_x = start_x + (i * 400)
+        
+        # player name
+        player_text = f"Player {player.PlayerID}"
+        text_surface = font.render(player_text, True, (255, 255, 255))
+        text_rect = text_surface.get_rect(center=(column_x + 400//2, ui_y + 40))
+        screen.blit(text_surface, text_rect)
+        
+        # player lifes
+        for life in range(3): 
+            life_x = column_x + (400 - (3 * (30 + 10)))//2 + (life * (30 + 10))
+            life_y = ui_y + 80 
+            
+            # player life color depending on the life
+            color = (255, 0, 0) if life < player.health else (50, 50, 50)
+            
+            # player life box
+            pygame.draw.rect(screen, color, (life_x, life_y, 30, 30), border_radius=5)
+
 def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
     pygame.joystick.init()
     pygame.font.init()
@@ -71,6 +100,9 @@ def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
                     player.play_animation(140, 103, 4)
 
         checkPlayerCollision(players)
+
+        # Dessiner l'UI des joueurs
+        draw_player_ui(screen, players)
 
         #print(clock.get_fps())
         pygame.display.flip()

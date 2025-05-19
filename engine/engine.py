@@ -18,11 +18,11 @@ def detectCollison(self):
         if CollisionTestRect.colliderect(obj.object):
             # if force was to high then explode
             if self.currentSpeed.x > DEAD_SPEED or self.currentSpeed.x < -DEAD_SPEED:
-                self.isDead = True 
+                self.handleDamage()
 
             # reset test rect to check on y axis
             CollisionTestRect.x -= self.CurrentFrameDistance.x
-            
+
             if self.CurrentFrameDistance.x > 0: 
                 self.CurrentFrameDistance.x = obj.object.left - self.rect.right
             else:

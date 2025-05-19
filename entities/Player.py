@@ -23,8 +23,8 @@ SPAWN_POINTS = [
 class Player(pygame.sprite.Sprite):
     def __init__(self, ID):
         super().__init__()
-        self.health = 100
-        self.max_health = 100
+        self.health = 3
+        self.max_health = 3
         self.power = 10
         self.x_velocity = 0.2
         self.max_x_velocity = 11
@@ -141,6 +141,16 @@ class Player(pygame.sprite.Sprite):
             self.image = self.image_idle
             self.timer = 0
             self.isAttacking = False
+
+    def handleDamage(self):
+        self.health -= 1
+        self.currentSpeed.x = 0
+        self.currentSpeed.y = 0
+        self.CurrentFrameDistance = Vector2(0, 0)
+        #self.rect.x = 1920 // 2 - self.rect.width // 2
+        #self.rect.y = 720 // 2 - self.rect.height // 2
+        if self.health == 0:
+            self.isDead = True
 
 
 

@@ -7,9 +7,9 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 #Called before set_mode
 info = pygame.display.Info()
 
-screen_width, screen_height = 1080, 720
+screen_width, screen_height = 1920, 1080
 
-WIDTH, HEIGHT = 1080, 720
+WIDTH, HEIGHT = screen_width, screen_height
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 

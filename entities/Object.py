@@ -26,7 +26,7 @@ platform3 =  Object((0,255,0), pygame.Rect(rect_x + 800, rect_y - 50, rect_width
 
 
 wall1 =  Object((100,100,225), pygame.Rect(0, 0, 5, 720), 5) 
-wall2 =  Object((100,100,225), pygame.Rect(1920, 0, 5, 720), 5) 
+wall2 =  Object((100,100,225), pygame.Rect(1915, 0, 5, 720), 5) 
 
 ground =  Object((100,100,225), pygame.Rect(0, 720 , 1920, 5), 5) 
 roof =  Object((100,100,225), pygame.Rect(0, 0, 1920, 5), 5) 
