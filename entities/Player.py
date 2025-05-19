@@ -85,9 +85,6 @@ class Player(pygame.sprite.Sprite):
         # check if player is colliding with an object
         detectCollison(self)
 
-        if self.PlayerID == -1:
-            print(self.currentSpeed.x)
-
         if self.wasBumped:
             self.bumpCooldown += 1
             if self.bumpCooldown > self.bumpCooldownTime:

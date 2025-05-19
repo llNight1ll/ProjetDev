@@ -14,6 +14,10 @@ from scene import getPlayer
 
 def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
     pygame.joystick.init()
+    pygame.font.init()
+
+    # font size for player text
+    player_font = pygame.font.Font(None, 36)  
 
     background = pygame.transform.scale(pygame.image.load('assets/bck.png').convert(), (screen_width-10, screen_height-50))
 
@@ -25,8 +29,8 @@ def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
 
     #Create the 2 keyboard players
     if control_mode == getPlayer.ControlMode.KEYBOARD:
-        players.append(Player.Player(-1))
-        players.append(Player.Player(-2))
+        players.append(Player.Player(1))
+        players.append(Player.Player(2))
     else:
         for js in joysticks:
             players.append(Player.Player(joysticks[js].get_instance_id()))
@@ -50,6 +54,11 @@ def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
 
         for player in players:
             screen.blit(player.image, player.rect)
+            # player text above player
+            player_text = f"Joueur {player.PlayerID}"
+            text_surface = player_font.render(player_text, True, (255, 255, 255))
+            text_rect = text_surface.get_rect(center=(player.rect.centerx, player.rect.top - 20))
+            screen.blit(text_surface, text_rect)
 
         for eye in eyes:
             screen.blit(eye.image, eye.rect)

@@ -4,7 +4,7 @@ from entities import list_objects
 
 
 GRAVITY = 0.5
-FRICTION = 0.92
+FRICTION = 0.90
 
 
 def detectCollison(self):

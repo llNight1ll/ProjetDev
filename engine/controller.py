@@ -14,7 +14,7 @@ def controller(players, control_mode):
                     # actions keys
                     if event.type == pygame.KEYDOWN:
                         # 1st player key
-                        if player.PlayerID == -1:
+                        if player.PlayerID == 1:
                             if event.key == pygame.K_SPACE:
                                 player.jump()
                             if event.key == pygame.K_LSHIFT:
@@ -24,7 +24,7 @@ def controller(players, control_mode):
                             #if event.key == pygame.K_a:
                                 #eye.shoot()
                         # 2nd player key
-                        if player.PlayerID == -2:
+                        if player.PlayerID == 2:
                             if event.key == pygame.K_UP:
                                 player.jump()
                             if event.key == pygame.K_RSHIFT:
@@ -50,7 +50,7 @@ def controller(players, control_mode):
                 # player keyboard movement keys
                 keys = pygame.key.get_pressed()
                 # 1st player key
-                if player.PlayerID == -1:
+                if player.PlayerID == 1:
                     if keys[pygame.K_q]:
                         player.move(-1)
                         player.frame_movement[0] = -1
@@ -58,7 +58,7 @@ def controller(players, control_mode):
                         player.move(1)
                         player.frame_movement[0] = 1
                 # 2nd player key
-                if player.PlayerID == -2:
+                if player.PlayerID == 2:
                     if keys[pygame.K_LEFT]:
                         player.move(-1)
                         player.frame_movement[0] = -1
