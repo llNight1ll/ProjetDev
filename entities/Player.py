@@ -53,6 +53,7 @@ class Player(pygame.sprite.Sprite):
         
         self.isGrounded = False
         self.isAttacking = False
+        self.isTakingDamage = False
         self.frame_movement = [0,0]
 
 
@@ -69,6 +70,9 @@ class Player(pygame.sprite.Sprite):
         
 
     def update(self):
+        if self.isTakingDamage:
+            return
+
         # move player at each frame
         if self.currentSpeed.x > self.max_x_velocity*3:
             self.CurrentFrameDistance.x += self.max_x_velocity*3
@@ -144,11 +148,17 @@ class Player(pygame.sprite.Sprite):
 
     def handleDamage(self):
         self.health -= 1
-        self.currentSpeed.x = 0
-        self.currentSpeed.y = 0
+        self.currentSpeed = Vector2(0, 0)
         self.CurrentFrameDistance = Vector2(0, 0)
-        #self.rect.x = 1920 // 2 - self.rect.width // 2
-        #self.rect.y = 720 // 2 - self.rect.height // 2
+        self.wasBumped = False
+        self.bumpCooldown = 0
+        self.isGrounded = False
+        self.isTakingDamage = True
+        
+        self.spawnPointID = random.randint(0, len(SPAWN_POINTS) - 1)
+        self.rect.x = SPAWN_POINTS[self.spawnPointID][0]
+        self.rect.y = SPAWN_POINTS[self.spawnPointID][1]
+        
         if self.health == 0:
             self.isDead = True
 

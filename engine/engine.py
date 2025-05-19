@@ -10,6 +10,9 @@ DEAD_SPEED = 12
 
 
 def detectCollison(self):
+    if self.isTakingDamage:
+        return
+
     CollisionTestRect = self.rect.copy()
     CollisionTestRect.x += self.CurrentFrameDistance.x
 
@@ -18,7 +21,10 @@ def detectCollison(self):
         if CollisionTestRect.colliderect(obj.object):
             # if force was to high then explode
             if self.currentSpeed.x > DEAD_SPEED or self.currentSpeed.x < -DEAD_SPEED:
+                self.isTakingDamage = True
                 self.handleDamage()
+                self.isTakingDamage = False
+                return
 
             # reset test rect to check on y axis
             CollisionTestRect.x -= self.CurrentFrameDistance.x
@@ -42,11 +48,16 @@ def detectCollison(self):
 
 
 def applyGravity(self):
+    if self.isTakingDamage:
+        return
+        
     self.currentSpeed.y += GRAVITY
-
     detectCollison(self)
 
 def applyFriction(self):
+    if self.isTakingDamage:
+        return
+        
     # stop if to slow
     if abs(self.currentSpeed.x) < 0.1:
         self.currentSpeed.x = 0
