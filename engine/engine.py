@@ -76,7 +76,7 @@ def checkPlayerCollision(Players):
             # don't check himself
             if i != j:
                 #check for colision
-                if player.rect.colliderect(other_player.rect) and not player.wasBumped:  
+                if player.rect.colliderect(other_player.rect) and not player.wasBumped and not player.isDead:  
                     #check if the player should push of be pushed
                     if abs(player.currentSpeed.x) > abs(other_player.currentSpeed.x):
                         if player.rect.x < other_player.rect.x:
