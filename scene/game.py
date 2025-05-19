@@ -50,25 +50,25 @@ def game(screen, screen_width, screen_height, clock, joysticks, control_mode):
         controller(players, control_mode)
 
         for player in players:
-            player.update()
+            if not player.isDead:
+                player.update()
 
         for player in players:
-            screen.blit(player.image, player.rect)
-            # player text above player
-            player_text = f"Joueur {player.PlayerID}"
-            text_surface = player_font.render(player_text, True, (255, 255, 255))
-            text_rect = text_surface.get_rect(center=(player.rect.centerx, player.rect.top - 20))
-            screen.blit(text_surface, text_rect)
-
-        for eye in eyes:
-            screen.blit(eye.image, eye.rect)
+            if not player.isDead:
+                screen.blit(player.image, player.rect)
+                # player text above player
+                player_text = f"Player {player.PlayerID}"
+                text_surface = player_font.render(player_text, True, (255, 255, 255))
+                text_rect = text_surface.get_rect(center=(player.rect.centerx, player.rect.top - 20))
+                screen.blit(text_surface, text_rect)
 
         for obj in list_objects:
             pygame.draw.rect(screen, obj.rgb, obj.object, obj.width)
 
         for player in players:
-            if (player.frame_index != 0):
-                player.play_animation(140, 103, 4)
+            if not player.isDead:
+                if (player.frame_index != 0):
+                    player.play_animation(140, 103, 4)
 
         checkPlayerCollision(players)
 

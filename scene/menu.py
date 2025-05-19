@@ -110,7 +110,7 @@ def menu():
         pygame.display.flip()
         
         for event in pygame.event.get():
-            print(event)
+            #print(event)
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == VIDEORESIZE:

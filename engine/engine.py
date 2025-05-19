@@ -6,23 +6,39 @@ from entities import list_objects
 GRAVITY = 0.5
 FRICTION = 0.90
 
+DEAD_SPEED = 12
+
 
 def detectCollison(self):
     CollisionTestRect = self.rect.copy()
     CollisionTestRect.x += self.CurrentFrameDistance.x
 
+    # check on x axis
     for obj in list_objects:
         if CollisionTestRect.colliderect(obj.object):
+            # if force was to high then explode
+            if self.currentSpeed.x > DEAD_SPEED or self.currentSpeed.x < -DEAD_SPEED:
+                self.isDead = True 
+
+            # reset test rect to check on y axis
             CollisionTestRect.x -= self.CurrentFrameDistance.x
-            self.CurrentFrameDistance.x = 0
+            
+            if self.CurrentFrameDistance.x > 0: 
+                self.CurrentFrameDistance.x = obj.object.left - self.rect.right
+            else:
+                self.CurrentFrameDistance.x = obj.object.right - self.rect.left
     
+    # check on y axis
     CollisionTestRect.y += self.CurrentFrameDistance.y
 
     for obj in list_objects:
         if CollisionTestRect.colliderect(obj.object):
+            # if colision when going down then on ground
             if self.CurrentFrameDistance.y > 0:
                 self.isGrounded = True
-            self.CurrentFrameDistance.y = 0
+                self.CurrentFrameDistance.y = obj.object.top - self.rect.bottom
+            else:
+                self.CurrentFrameDistance.y = obj.object.bottom - self.rect.top
 
 
 def applyGravity(self):

@@ -64,6 +64,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = SPAWN_POINTS[self.spawnPointID][1]
 
         self.PlayerID = ID
+
+        self.isDead = False
         
 
     def update(self):
