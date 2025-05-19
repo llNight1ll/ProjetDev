@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite):
 
         self.CurrentFrameDistance = Vector2(0, 0)
 
-        self.image_idle =  pygame.image.load('assets/player.png').convert_alpha()
+        self.image_idle =  pygame.transform.scale_by(pygame.image.load('assets/player1.png').convert(), 0.07)
         self.image_attack =  pygame.image.load('assets/player_sheet_attack.png').convert_alpha()
 
         self.frame_index = 0
