@@ -26,8 +26,8 @@ class Player(pygame.sprite.Sprite):
         self.health = 3
         self.max_health = 3
         self.power = 10
-        self.x_velocity = 0.2
-        self.max_x_velocity = 11
+        self.x_velocity = 0.3
+        self.max_x_velocity = 13
         self.y_velocity = 10
         self.max_y_velocity = 11
         self.jump_power = 15
@@ -42,8 +42,9 @@ class Player(pygame.sprite.Sprite):
 
         self.CurrentFrameDistance = Vector2(0, 0)
 
-        self.image_idle =  pygame.transform.scale_by(pygame.image.load('assets/player1.png').convert(), 0.07)
-        self.image_attack =  pygame.image.load('assets/player_sheet_attack.png').convert_alpha()
+        self.skin_number = random.randint(1, 4)
+        self.image_idle = pygame.transform.scale_by(pygame.image.load(f'assets/player{self.skin_number}.png').convert(), 0.07)
+        self.image_attack = pygame.image.load('assets/player_sheet_attack.png').convert_alpha()
 
         self.frame_index = 0
 

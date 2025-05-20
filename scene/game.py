@@ -24,6 +24,11 @@ def draw_player_ui(screen, players):
         # column position
         column_x = start_x + (i * 400)
         
+        # add skin icon
+        skin_icon = pygame.transform.scale_by(pygame.image.load(f'assets/player{player.skin_number}.png').convert_alpha(), 0.05)
+        skin_rect = skin_icon.get_rect(center=(column_x + 400//2, ui_y))
+        screen.blit(skin_icon, skin_rect)
+        
         # player name
         player_text = f"Player {player.PlayerID}"
         text_surface = font.render(player_text, True, (255, 255, 255))
