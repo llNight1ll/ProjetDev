@@ -1,9 +1,9 @@
 import pygame
 from scene import getPlayer
 
-def controller(players, control_mode):
+def controller(players, control_mode, projectiles, events):
     # handle quit button
-    for event in pygame.event.get():
+    for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
 
@@ -42,6 +42,11 @@ def controller(players, control_mode):
                             player.attack()
                         if event.type == pygame.JOYAXISMOTION and event.axis == 5:
                             player.move(70)
+                        if event.type == pygame.JOYBUTTONDOWN and ( event.button == 10 or event.button == 5):
+                            joystick = pygame.joystick.Joystick(player.PlayerID)
+                            dx = joystick.get_axis(2)
+                            dy = joystick.get_axis(3)
+                            player.shoot(dx,dy, projectiles)
 
 
     for player in players:

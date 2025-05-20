@@ -9,6 +9,8 @@ from entities import list_objects
 
 from engine.controller import controller
 
+from entities.Bullet import Bullet
+
 import random
 
 SPAWN_POINTS = [
@@ -70,6 +72,9 @@ class Player(pygame.sprite.Sprite):
         self.isDead = False
         
 
+        self.last_shot_time = 0
+        self.shoot_cooldown = 700
+
     def update(self):
         if self.isTakingDamage:
             return
@@ -102,6 +107,9 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += self.CurrentFrameDistance.y
 
         self.CurrentFrameDistance = Vector2(0, 0)
+
+        print(self.rect.x, self.rect.y)
+
 
     def move(self, direction):
         target_speed = direction * self.max_x_velocity
@@ -163,10 +171,41 @@ class Player(pygame.sprite.Sprite):
         if self.health == 0:
             self.isDead = True
 
+    def shoot(self,dx,dy, projectiles_group):
+        current_time = pygame.time.get_ticks()
+
+        if current_time - self.last_shot_time >= self.shoot_cooldown:
+
+            deadzone = 0.2
+
+            if abs(dx) > deadzone or abs(dy) > deadzone:
+                direction = (dx, dy)
+                projectile = Bullet(self.rect.center[0], self.rect.center[1], direction)
+                projectiles_group.add(projectile)
+
+
+                self.last_shot_time = current_time
+    def resize(self, scale_x, scale_y):
+
+        print(self.rect.x, self.rect.y)
+        # Nouvelle position
+        old_x, old_y = self.rect.x, self.rect.y
+
+
+        # Nouvelle taille
+        new_size = (int(self.rect.width * scale_x), int(self.rect.height * scale_y))
+
+        print(new_size)
+
+        self.image_idle = pygame.transform.scale(self.image_idle, new_size)
+        self.image =  self.image_idle
+        self.rect = self.image.get_rect()
+
+        self.rect.x, self.rect.y = (int(old_x * scale_x), int(old_y * scale_y))
 
 
 
-
+        
         
 
 
