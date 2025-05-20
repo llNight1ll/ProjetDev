@@ -26,11 +26,11 @@ class Player(pygame.sprite.Sprite):
         self.health = 3
         self.max_health = 3
         self.power = 10
-        self.x_velocity = 0.3
-        self.max_x_velocity = 13
+        self.x_velocity = 0.5
+        self.max_x_velocity = 15
         self.y_velocity = 10
         self.max_y_velocity = 11
-        self.jump_power = 15
+        self.jump_power = 25
         self.bumpPower = 3
 
         self.timer = 0

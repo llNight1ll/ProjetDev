@@ -3,10 +3,10 @@ import pygame
 from entities import list_objects
 
 
-GRAVITY = 0.5
+GRAVITY = 1
 FRICTION = 0.90
 
-DEAD_SPEED = 12
+DEAD_SPEED = 28
 
 
 def detectCollison(self):
@@ -45,6 +45,7 @@ def detectCollison(self):
                 self.CurrentFrameDistance.y = obj.object.top - self.rect.bottom
             else:
                 self.CurrentFrameDistance.y = obj.object.bottom - self.rect.top
+                self.currentSpeed.y = 0
 
 
 def applyGravity(self):

@@ -13,10 +13,10 @@ from entities import list_objects
 from scene import getPlayer
 
 def draw_player_ui(screen, players):    
-    ui_y = 1080 - 150 - 40
+    ui_y = 900 - 150 - 40
     
     total_width = len(players) * 400
-    start_x = (1920 - total_width) // 2
+    start_x = (1500 - total_width) // 2
     
     font = pygame.font.Font(None, 48)
 

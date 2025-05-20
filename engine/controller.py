@@ -20,7 +20,7 @@ def controller(players, control_mode):
                             if event.key == pygame.K_LSHIFT:
                                 player.attack()
                             if event.key == pygame.K_e:
-                                player.move(player.frame_movement[0] * 200)
+                                player.currentSpeed.x += 300
                             #if event.key == pygame.K_a:
                                 #eye.shoot()
                         # 2nd player key
@@ -30,7 +30,7 @@ def controller(players, control_mode):
                             if event.key == pygame.K_RSHIFT:
                                 player.attack()
                             if event.key == pygame.K_g:
-                                player.move(player.frame_movement[0] * 200)
+                                player.currentSpeed.x += 60
                             #if event.key == pygame.K_RCTRL:
                                 #eye.shoot()
 
