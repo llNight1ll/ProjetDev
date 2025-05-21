@@ -75,13 +75,14 @@ def controller(players, control_mode, projectiles, events):
                 if pygame.joystick.get_count() > 0:
                     for i in range(pygame.joystick.get_count()):
                         joystick = pygame.joystick.Joystick(i)
+
+                        # Mise à jour de la position de l'œil autour du joueur
+                        dx = joystick.get_axis(2)
+                        dy = joystick.get_axis(3)
+                        player.pistol.update(dy,dx)
                         if joystick.get_instance_id() == player.PlayerID:
                             if joystick.get_axis(0) < -0.1:
                                 player.move(-1)
                             elif joystick.get_axis(0) > 0.1:
                                 player.move(1)
 
-    # Mise à jour de la position de l'œil autour du joueur
-    mouse_pos = pygame.mouse.get_pos()
-    #eye.update(mouse_pos)
-    #eye.move()

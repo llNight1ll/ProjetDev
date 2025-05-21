@@ -7,7 +7,6 @@ from engine.controller import controller
 from engine.engine import checkPlayerCollision
 
 from entities import Player
-from entities import Eye
 
 from entities import list_objects
 from scene import getPlayer
@@ -76,8 +75,6 @@ def game(screen, clock, joysticks, control_mode):
     for player in players:
         print(f"Joueur créé avec l'ID: {player.PlayerID}")
 
-    for player in players:
-        eyes.append(Eye.Eye(player))
 
     running = True
 
@@ -108,6 +105,12 @@ def game(screen, clock, joysticks, control_mode):
 
         screen.blit(background, (offset_X, offset_Y))
 
+
+        
+        projectiles.update()
+
+        projectiles.draw(screen)
+
         # Gestion des contrôles pour tous les joueurs
         controller(players, control_mode, projectiles,events)
 
@@ -118,6 +121,7 @@ def game(screen, clock, joysticks, control_mode):
         for player in players:
             if not player.isDead:
                 screen.blit(player.image, player.rect)
+                player.pistol.draw(screen)
                 # player text above player
                 player_text = f"Player {player.PlayerID}"
                 text_surface = player_font.render(player_text, True, (255, 255, 255))
@@ -134,11 +138,7 @@ def game(screen, clock, joysticks, control_mode):
 
         checkPlayerCollision(players)
 
-        # Mise à jour des projectiles
-        projectiles.update()
 
-        # Dessin
-        projectiles.draw(screen)
 
         # Dessiner l'UI des joueurs
         draw_player_ui(screen, players)

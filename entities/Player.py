@@ -6,12 +6,13 @@ from engine.engine import detectCollison
 from engine.engine import applyFriction
 from engine.engine import applyGravity
 from entities import list_objects
-
+from entities.Pistol import Pistol
 from engine.controller import controller
 
 from entities.Bullet import Bullet
 
 import random
+
 
 SPAWN_POINTS = [
     (300, 445),
@@ -74,6 +75,8 @@ class Player(pygame.sprite.Sprite):
 
         self.last_shot_time = 0
         self.shoot_cooldown = 700
+
+        self.pistol = Pistol(self)
 
     def update(self):
         if self.isTakingDamage:
