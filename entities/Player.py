@@ -5,9 +5,7 @@ from pygame.math import Vector2
 from engine.engine import detectCollison
 from engine.engine import applyFriction
 from engine.engine import applyGravity
-from entities import list_objects
 from entities.Pistol import Pistol
-from engine.controller import controller
 
 from entities.Bullet import Bullet
 
@@ -52,6 +50,7 @@ class Player(pygame.sprite.Sprite):
         self.frame_index = 0
 
         self.image =  self.image_idle
+        self.baseImage =  self.image_idle
         self.rect = self.image.get_rect()
 
         
@@ -174,7 +173,7 @@ class Player(pygame.sprite.Sprite):
         if self.health == 0:
             self.isDead = True
 
-    def shoot(self,dx,dy, projectiles_group):
+    def shoot(self,dx,dy, bullets):
         current_time = pygame.time.get_ticks()
 
         if current_time - self.last_shot_time >= self.shoot_cooldown:
@@ -183,8 +182,8 @@ class Player(pygame.sprite.Sprite):
 
             if abs(dx) > deadzone or abs(dy) > deadzone:
                 direction = (dx, dy)
-                projectile = Bullet(self.rect.center[0], self.rect.center[1], direction)
-                projectiles_group.add(projectile)
+                bullet = Bullet(self.rect.center[0], self.rect.center[1], direction, self.PlayerID)
+                bullets.add(bullet)
 
 
                 self.last_shot_time = current_time
@@ -200,8 +199,7 @@ class Player(pygame.sprite.Sprite):
 
         print(new_size)
 
-        self.image_idle = pygame.transform.scale(self.image_idle, new_size)
-        self.image =  self.image_idle
+        self.image =  pygame.transform.scale(self.baseImage, new_size)
         self.rect = self.image.get_rect()
 
         self.rect.x, self.rect.y = (int(old_x * scale_x), int(old_y * scale_y))

@@ -1,7 +1,7 @@
 import pygame
 from scene import getPlayer
 
-def controller(players, control_mode, projectiles, events):
+def controller(players, control_mode, bullets, events):
     # handle quit button
     for event in events:
         if event.type == pygame.QUIT:
@@ -21,8 +21,7 @@ def controller(players, control_mode, projectiles, events):
                                 player.attack()
                             if event.key == pygame.K_e:
                                 player.currentSpeed.x += 300
-                            #if event.key == pygame.K_a:
-                                #eye.shoot()
+
                         # 2nd player key
                         if player.PlayerID == 2:
                             if event.key == pygame.K_UP:
@@ -31,8 +30,7 @@ def controller(players, control_mode, projectiles, events):
                                 player.attack()
                             if event.key == pygame.K_g:
                                 player.currentSpeed.x += 60
-                            #if event.key == pygame.K_RCTRL:
-                                #eye.shoot()
+
 
                 elif control_mode == getPlayer.ControlMode.CONTROLLER and player.PlayerID >= 0:
                     if hasattr(event, "instance_id") and event.instance_id == player.PlayerID:
@@ -46,7 +44,7 @@ def controller(players, control_mode, projectiles, events):
                             joystick = pygame.joystick.Joystick(player.PlayerID)
                             dx = joystick.get_axis(2)
                             dy = joystick.get_axis(3)
-                            player.shoot(dx,dy, projectiles)
+                            player.shoot(dx,dy, bullets)
 
 
     for player in players:
@@ -76,11 +74,12 @@ def controller(players, control_mode, projectiles, events):
                     for i in range(pygame.joystick.get_count()):
                         joystick = pygame.joystick.Joystick(i)
 
-                        # Mise à jour de la position de l'œil autour du joueur
-                        dx = joystick.get_axis(2)
-                        dy = joystick.get_axis(3)
-                        player.pistol.update(dy,dx)
                         if joystick.get_instance_id() == player.PlayerID:
+
+                            dx = joystick.get_axis(2)
+                            dy = joystick.get_axis(3)
+                            player.pistol.update(dy,dx)
+
                             if joystick.get_axis(0) < -0.1:
                                 player.move(-1)
                             elif joystick.get_axis(0) > 0.1:

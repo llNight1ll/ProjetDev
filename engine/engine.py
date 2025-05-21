@@ -1,6 +1,6 @@
 import pygame
 
-from entities import list_objects
+from entities.Object import map1
 
 
 GRAVITY = 1
@@ -17,7 +17,7 @@ def detectCollison(self):
     CollisionTestRect.x += self.CurrentFrameDistance.x
 
     # check on x axis
-    for obj in list_objects:
+    for obj in map1.objects:
         if CollisionTestRect.colliderect(obj.object):
             # if force was to high then explode
             if self.currentSpeed.x > DEAD_SPEED or self.currentSpeed.x < -DEAD_SPEED:
@@ -37,7 +37,7 @@ def detectCollison(self):
     # check on y axis
     CollisionTestRect.y += self.CurrentFrameDistance.y
 
-    for obj in list_objects:
+    for obj in map1.objects:
         if CollisionTestRect.colliderect(obj.object):
             # if colision when going down then on ground
             if self.CurrentFrameDistance.y > 0:
@@ -47,6 +47,11 @@ def detectCollison(self):
                 self.CurrentFrameDistance.y = obj.object.bottom - self.rect.top
                 self.currentSpeed.y = 0
 
+
+def bulletCollision(self, players):
+    for player in players:
+        if self.rect.colliderect(player.rect) and self.shooter != player.PlayerID:
+            self.kill()
 
 def applyGravity(self):
     if self.isTakingDamage:
