@@ -47,7 +47,6 @@ class Player(pygame.sprite.Sprite):
 
         self.skin_number = ID + 1
         self.image_idle = pygame.transform.scale_by(pygame.image.load(f'assets/player{self.skin_number}.png').convert(), 0.07)
-        self.image_attack = pygame.image.load('assets/player_sheet_attack.png').convert_alpha()
 
         self.frame_index = 0
 
@@ -156,37 +155,7 @@ class Player(pygame.sprite.Sprite):
         if self.isGrounded:
             self.currentSpeed.y = -self.jump_power
             self.isGrounded = False
-    
-    def attack(self):
-        self.isAttacking = True
-        self.play_animation(140,103,4)
 
-
-    def play_animation(self, frame_width, frame_height, frame_number):
-        frame_time = 5
-
-        self.image = self.image_attack
-
-
-        frames = [self.image.subsurface(pygame.Rect(i * frame_width, 0, frame_width, frame_height)) for i in range(frame_number)]
-
-
-
-        self.image = frames[self.frame_index]
-
-        self.timer +=1
-
-        if (self.timer > frame_time or self.frame_index == 0 ):
-
-            self.frame_index = (self.frame_index + 1) % frame_number
-            self.timer = 0
-        
-
-        if (self.frame_index == frame_number - 1 and self.timer >= frame_time):
-            self.frame_index = 0
-            self.image = self.image_idle
-            self.timer = 0
-            self.isAttacking = False
 
     def handleDamage(self):
         self.health -= 1
@@ -240,8 +209,6 @@ def resizePoints(scale_x, scale_y):
         x, y = spawn_points[i]
         spawn_points[i] = (int(x * scale_x), int(y * scale_y))
 
-    print("spanw")
-    print(spawn_points)
 
 
 

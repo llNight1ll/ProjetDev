@@ -17,8 +17,6 @@ def controller(players, control_mode, bullets, events):
                         if player.PlayerID == 1:
                             if event.key == pygame.K_SPACE:
                                 player.jump()
-                            if event.key == pygame.K_LSHIFT:
-                                player.attack()
                             if event.key == pygame.K_e:
                                 player.dash(1)
 
@@ -26,8 +24,6 @@ def controller(players, control_mode, bullets, events):
                         if player.PlayerID == 2:
                             if event.key == pygame.K_UP:
                                 player.jump()
-                            if event.key == pygame.K_RSHIFT:
-                                player.attack()
                             if event.key == pygame.K_g:
                                 player.dash(1)
 
@@ -37,8 +33,6 @@ def controller(players, control_mode, bullets, events):
                     if hasattr(event, "instance_id") and event.instance_id == player.PlayerID:
                         if event.type == pygame.JOYBUTTONDOWN and event.button == 0:
                             player.jump()
-                        if event.type == pygame.JOYBUTTONDOWN and event.button == 2 and not player.isAttacking:
-                            player.attack()
                         if event.type == pygame.JOYAXISMOTION and event.axis == 5:
                             joystick = pygame.joystick.Joystick(player.PlayerID)
 
