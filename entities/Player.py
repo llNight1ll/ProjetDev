@@ -43,7 +43,7 @@ class Player(pygame.sprite.Sprite):
 
         self.CurrentFrameDistance = Vector2(0, 0)
 
-        self.skin_number = random.randint(1, 4)
+        self.skin_number = ID
         self.image_idle = pygame.transform.scale_by(pygame.image.load(f'assets/player{self.skin_number}.png').convert(), 0.07)
         self.image_attack = pygame.image.load('assets/player_sheet_attack.png').convert_alpha()
 
