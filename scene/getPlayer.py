@@ -34,16 +34,16 @@ screen = pygame.display.set_mode((screen_width-10, screen_height-50), pygame.RES
 clock = pygame.time.Clock()
 
 # Couleurs
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
+RED = (250, 50, 0)
+GREEN = (50, 200, 0)
 LIGHT_GREEN = (69, 253, 112)
-BLUE = (0, 0, 255)
+BLUE = (0, 50, 250)
 WHITE = (255, 255, 255)
 GRAY = (170, 170, 170)
 DARK_GRAY = (100, 100, 100)
 BLACK = (0, 0, 0)
 
-colors = [RED, GREEN, BLUE, WHITE, BLACK]
+colors = [RED, GREEN, BLUE, BLACK, WHITE]
 
 # Police
 pygame.font.init()

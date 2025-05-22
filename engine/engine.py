@@ -1,3 +1,4 @@
+import math
 import pygame
 import json
 import os
@@ -14,15 +15,25 @@ DEAD_SPEED = 28
 def detectCollison(self):
     if self.isTakingDamage:
         return
+    
+    screen_width = pygame.display.get_surface().get_width()
+    screen_height = pygame.display.get_surface().get_height()
+
+    if self.rect.x < 0 or self.rect.x > screen_width or self.rect.y < 0 or self.rect.y > screen_height :
+        self.isTakingDamage = True
+        self.handleDamage()
+        self.isTakingDamage = False
+        return
 
     CollisionTestRect = self.rect.copy()
     CollisionTestRect.x += self.CurrentFrameDistance.x
+
 
     # check on x axis
     for obj in map1.objects:
         if CollisionTestRect.colliderect(obj.object):
             # if force was to high then explode
-            if self.currentSpeed.x > DEAD_SPEED or self.currentSpeed.x < -DEAD_SPEED:
+            if self.currentSpeed.x > DEAD_SPEED or self.currentSpeed.x < -DEAD_SPEED :
                 self.isTakingDamage = True
                 self.handleDamage()
                 self.isTakingDamage = False
@@ -53,8 +64,8 @@ def detectCollison(self):
 def bulletCollision(self, players):
     for player in players:
         if self.rect.colliderect(player.rect) and self.shooter != player.PlayerID:
-            self.kill()
-
+                self.kill()
+                break
 def applyGravity(self):
     if self.isTakingDamage:
         return

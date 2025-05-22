@@ -2,10 +2,10 @@ import pygame
 import math
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x, y, direction,  shooter, speed=30):
+    def __init__(self, x, y, direction,  shooter, speed=45):
         super().__init__()
-        self.image = pygame.Surface((10, 7))
-        self.image.fill((255, 0, 0))
+        self.image = pygame.Surface((20, 15))
+        self.image.fill((255, 255, 255))
         self.rect = self.image.get_rect(center=(x, y))
         self.shooter = shooter
 

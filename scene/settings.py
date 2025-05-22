@@ -21,6 +21,8 @@ pygame.mixer.music.load("assets/music/music1.mp3")
 pygame.mixer.music.set_volume(float(volume))
 pygame.mixer.music.play(-1)
 
+
+
 #Define slider
 class Slider:
     def __init__(self):
@@ -85,6 +87,19 @@ def settings(screen, SCREEN_WIDTH, joysticks):
     clock = pygame.time.Clock()
     dragging = False
 
+
+
+    # Initialisation responsive
+    WIDTH, HEIGHT = screen.get_size()
+    ui = resize_elements((WIDTH, HEIGHT))
+    title_font = ui["title_font"]
+    text_font = ui["text_font"]
+    back_button = ui["back_button"]
+    scale = ui["scale"]
+    scale_x = ui["scale_x"]
+    scale_y = ui["scale_y"]
+
+
     running = True
     while running:
         screen.fill((50, 50, 50))
@@ -101,10 +116,32 @@ def settings(screen, SCREEN_WIDTH, joysticks):
         volume_text = font.render(f"{int(pygame.mixer.music.get_volume() * 100)}%", True, DARK_GRAY)
         screen.blit(volume_text, (s_Width // 2 - volume_text.get_width() // 2, 350))
 
+
+        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if back_button.collidepoint(event.pos):
+                    running = False
 
+            elif event.type == pygame.JOYBUTTONDOWN and event.button == 0:
+                running = False
+
+
+            elif event.type == pygame.VIDEORESIZE:
+                screen = pygame.display.set_mode(event.size, pygame.RESIZABLE)
+                ui = resize_elements(event.size)
+                title_font = ui["title_font"]
+                text_font = ui["text_font"]
+                back_button = ui["back_button"]
+                scale = ui["scale"]
+                scale_x = ui["scale_x"]
+                scale_y = ui["scale_y"]
+
+                WIDTH, HEIGHT = event.size
+                
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if abs(event.pos[0] - slider.handle_x) <= slider.handle_radius and abs(event.pos[1] - slider.rect.centery) <= slider.handle_radius:
@@ -135,7 +172,8 @@ def settings(screen, SCREEN_WIDTH, joysticks):
                 if event.instance_id in joysticks:
                     del joysticks[event.instance_id]
                     print("Manette déconnectée")
-                
+                                
+
 
 
             elif event.type == pygame.JOYBUTTONDOWN and event.button == 14:
@@ -149,7 +187,11 @@ def settings(screen, SCREEN_WIDTH, joysticks):
                     update_volume_controller(1)
                 elif event.value == (-1, 0):
                     update_volume_controller(-1)
-
+        # back button
+        pygame.draw.rect(screen, GRAY, back_button, border_radius=10)
+        back_text = text_font.render("Back", True, WHITE)
+        back_text_rect = back_text.get_rect(center=back_button.center)
+        screen.blit(back_text, back_text_rect)
 
         pygame.display.flip()
         clock.tick(60)
@@ -160,4 +202,27 @@ def settings(screen, SCREEN_WIDTH, joysticks):
 
 
 
-      
+BASE_WIDTH = 1280
+BASE_HEIGHT = 720
+
+def resize_elements(screen_size):
+    width, height = screen_size
+    scale_x = width / BASE_WIDTH
+    scale_y = height / BASE_HEIGHT
+    scale = min(scale_x, scale_y)
+
+    title_font = pygame.font.Font(None, int(72 * scale))
+    text_font = pygame.font.Font(None, int(36 * scale))
+
+    # Bouton "Back" responsive
+    back_button = pygame.Rect(width // 2 - int(100 * scale), height - int(100 * scale), int(200 * scale), int(50 * scale))
+
+    return {
+        "scale": scale,
+        "scale_x": scale_x,
+        "scale_y": scale_y,
+        "title_font": title_font,
+        "text_font": text_font,
+        "back_button": back_button,
+        "width": width,
+    }

@@ -67,10 +67,6 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = spawn_points[self.spawnPointID][0]
         self.rect.y = spawn_points[self.spawnPointID][1] - self.rect.height
 
-        print("pos")
-        print(self.spawnPointID)
-        print( spawn_points[self.spawnPointID][0] , spawn_points[self.spawnPointID][1])
-
         self.PlayerID = ID
 
         self.isDead = False
@@ -81,13 +77,9 @@ class Player(pygame.sprite.Sprite):
 
         self.pistol = Pistol(self)
 
-
-
-
-
         self.canDash = True
         self.isDashing = False
-        self.dashCooldown = 4
+        self.dashCooldown = 200
         self.dashCooldownTimer = 0
         self.dashDuration = 10
         self.dashTimer = 0
@@ -110,7 +102,6 @@ class Player(pygame.sprite.Sprite):
             self.dashTimer += 1
             if self.dashTimer >= self.dashDuration:
                 self.isDashing = False
-            self.CurrentFrameDistance.y += 0 
         else :
         
             # move player at each frame
@@ -206,7 +197,6 @@ class Player(pygame.sprite.Sprite):
         
         self.rect.x = spawn_points[4][0]
         self.rect.y = spawn_points[4][1]
-        
         if self.health == 0:
             self.isDead = True
 

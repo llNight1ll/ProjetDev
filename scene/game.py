@@ -139,7 +139,7 @@ def game(screen, clock, joysticks, control_mode):
             
         bullets.draw(screen)
 
-        # Gestion des contrôles pour tous les joueurs
+        # Manage all player inouts
         controller(players, control_mode, bullets,events)
 
         for player in players:
@@ -149,6 +149,8 @@ def game(screen, clock, joysticks, control_mode):
         for player in players:
             if not player.isDead:
                 screen.blit(player.image, player.rect)
+                player.pistol.update(0,0)
+
                 player.pistol.draw(screen)
                 # player text above player
                 player_text = f"Player {player.PlayerID}"
@@ -178,6 +180,9 @@ def game(screen, clock, joysticks, control_mode):
 
         #print(players[0].rect.x, players[0].rect.y)
     
+        for player in players :
+            print(player.rect.x, player.rect.y)
+
     # find winner
     winner = None
     for player in players:
@@ -187,9 +192,9 @@ def game(screen, clock, joysticks, control_mode):
     
     saveScore(winner)
     # draw end screen
-    draw_end_screen(screen, winner, clock)
+    draw_end_screen(screen, winner, clock, joysticks)
 
-def draw_end_screen(screen, winner, clock):
+def draw_end_screen(screen, winner, clock, joysticks):
     screen_width, screen_height = screen.get_size()
     
     # font
@@ -212,12 +217,29 @@ def draw_end_screen(screen, winner, clock):
                 if button_rect.collidepoint(event.pos):
                     running = False
                     menu.menu()
+
+
+            elif event.type == pygame.JOYDEVICEADDED:
+                joystick = pygame.joystick.Joystick(event.device_index)
+                joystick.init()
+                joysticks[joystick.get_instance_id()] = joystick
+                print(f"Manette connectée : {joystick.get_name()}")
+
+            elif event.type == pygame.JOYDEVICEREMOVED:
+                if event.instance_id in joysticks:
+                    del joysticks[event.instance_id]
+                    print("Manette déconnectée")
+                
+            elif event.type == pygame.JOYBUTTONDOWN and event.button == 0:
+                running = False
+                menu.menu()
+
         
         # background
         screen.fill((0, 0, 0))
         
         # title
-        title_text = "Fin de partie"
+        title_text = "End Game"
         title_surface = title_font.render(title_text, True, (255, 255, 255))
         title_rect = title_surface.get_rect(center=(screen_width // 2, 100))
         screen.blit(title_surface, title_rect)
@@ -231,14 +253,14 @@ def draw_end_screen(screen, winner, clock):
             screen.blit(winner_image, winner_rect)
             
             # winner text
-            winner_text = f"Le joueur {winner.PlayerID} a gagné !"
+            winner_text = f"Player {winner.PlayerID} has won !"
             text_surface = text_font.render(winner_text, True, (255, 255, 255))
             text_rect = text_surface.get_rect(center=(screen_width // 2, screen_height // 2 + 100))
             screen.blit(text_surface, text_rect)
         
         # back to menu button
         pygame.draw.rect(screen, (100, 100, 100), button_rect, border_radius=10)
-        button_text = "Retour au menu"
+        button_text = "Back"
         button_surface = text_font.render(button_text, True, (255, 255, 255))
         button_text_rect = button_surface.get_rect(center=button_rect.center)
         screen.blit(button_surface, button_text_rect)
