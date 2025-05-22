@@ -1,4 +1,6 @@
 import pygame
+import json
+import os
 
 from entities.Object import map1
 
@@ -104,3 +106,27 @@ def checkEndGame(players):
             if alivePlayersCount > 1:
                 return False
     return True
+
+
+def saveScore(winner):        
+    file_path = os.path.join("data", "data.json")
+    
+    try:
+        # load json
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+        
+        # increase winner score
+        winner_id = str(winner.PlayerID)
+        if winner_id not in data["scores"]:
+            data["scores"][winner_id] = 0
+        data["scores"][winner_id] += 1
+        
+        # save json
+        with open(file_path, 'w') as f:
+            json.dump(data, f, indent=4)
+        
+            
+    except Exception as e:
+        print(f"Error while saving score: {e}")
+    

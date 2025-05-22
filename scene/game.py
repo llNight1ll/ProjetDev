@@ -8,6 +8,7 @@ from engine.controller import controller
 from engine.engine import checkPlayerCollision
 from engine.engine import bulletCollision
 from engine.engine import checkEndGame
+from engine.engine import saveScore
 
 from entities import Player
 
@@ -181,6 +182,7 @@ def game(screen, clock, joysticks, control_mode):
             winner = player
             break
     
+    saveScore(winner)
     # draw end screen
     draw_end_screen(screen, winner, clock)
 
