@@ -9,6 +9,7 @@ from engine.engine import checkPlayerCollision
 from engine.engine import bulletCollision
 from engine.engine import checkEndGame
 from engine.engine import saveScore
+from entities.Player import resizePoints
 
 from entities import Player
 
@@ -122,6 +123,8 @@ def game(screen, clock, joysticks, control_mode):
                     player.resize(scale_x,scale_y)
 
                 map1.resize(scale_x, scale_y, event.size[0], event.size[1])
+
+                resizePoints(scale_x, scale_y)
 
 
 

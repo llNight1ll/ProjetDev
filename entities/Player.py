@@ -12,13 +12,13 @@ from entities.Bullet import Bullet
 import random
 
 
-SPAWN_POINTS = [
-    (157, 445),
-    (1023, 445),
-    (640, 245),
-    (200, 665),
-    (640, 665),
-    (1080, 665)
+spawn_points = [
+    (100,720),
+    (1280-100, 720),
+    (1280//3, 720),
+    (1280-1280//3, 720),
+    (1280//2, 100)
+
 ]
 
 class Player(pygame.sprite.Sprite):
@@ -43,7 +43,7 @@ class Player(pygame.sprite.Sprite):
 
         self.CurrentFrameDistance = Vector2(0, 0)
 
-        self.skin_number = ID
+        self.skin_number = ID + 1
         self.image_idle = pygame.transform.scale_by(pygame.image.load(f'assets/player{self.skin_number}.png').convert(), 0.07)
         self.image_attack = pygame.image.load('assets/player_sheet_attack.png').convert_alpha()
 
@@ -63,9 +63,13 @@ class Player(pygame.sprite.Sprite):
         self.frame_width = 64
         self.frame_height = 64
 
-        self.spawnPointID = random.randint(0, len(SPAWN_POINTS) - 1)
-        self.rect.x = SPAWN_POINTS[self.spawnPointID][0]
-        self.rect.y = SPAWN_POINTS[self.spawnPointID][1]
+        self.spawnPointID = ID
+        self.rect.x = spawn_points[self.spawnPointID][0]
+        self.rect.y = spawn_points[self.spawnPointID][1] - self.rect.height
+
+        print("pos")
+        print(self.spawnPointID)
+        print( spawn_points[self.spawnPointID][0] , spawn_points[self.spawnPointID][1])
 
         self.PlayerID = ID
 
@@ -166,9 +170,8 @@ class Player(pygame.sprite.Sprite):
         self.isGrounded = False
         self.isTakingDamage = True
         
-        self.spawnPointID = random.randint(0, len(SPAWN_POINTS) - 1)
-        self.rect.x = SPAWN_POINTS[self.spawnPointID][0]
-        self.rect.y = SPAWN_POINTS[self.spawnPointID][1]
+        self.rect.x = spawn_points[4][0]
+        self.rect.y = spawn_points[4][1]
         
         if self.health == 0:
             self.isDead = True
@@ -189,15 +192,12 @@ class Player(pygame.sprite.Sprite):
                 self.last_shot_time = current_time
     def resize(self, scale_x, scale_y):
 
-        print(self.rect.x, self.rect.y)
-        # Nouvelle position
+    
         old_x, old_y = self.rect.x, self.rect.y
 
 
-        # Nouvelle taille
         new_size = (int(self.rect.width * scale_x), int(self.rect.height * scale_y))
 
-        print(new_size)
 
         self.image =  pygame.transform.scale(self.baseImage, new_size)
         self.rect = self.image.get_rect()
@@ -208,7 +208,13 @@ class Player(pygame.sprite.Sprite):
 
         
         
+def resizePoints(scale_x, scale_y):
+    for i in range(len(spawn_points)):
+        x, y = spawn_points[i]
+        spawn_points[i] = (int(x * scale_x), int(y * scale_y))
 
+    print("spanw")
+    print(spawn_points)
 
 
 
