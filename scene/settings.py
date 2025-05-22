@@ -85,8 +85,9 @@ def settings(screen, SCREEN_WIDTH, joysticks):
     clock = pygame.time.Clock()
     dragging = False
 
-    while True:
-        screen.fill(WHITE)
+    running = True
+    while running:
+        screen.fill((50, 50, 50))
 
         title = font.render("Settings", True, DARK_GRAY)
         screen.blit(title, (s_Width // 2 - title.get_width() // 2, 100))
@@ -102,8 +103,7 @@ def settings(screen, SCREEN_WIDTH, joysticks):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
+                running = False
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
