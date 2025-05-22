@@ -11,7 +11,7 @@ Un jeu d'arcade multijoueur inspiré de Smash Bros, développé par Sami Hmida e
 
 ## 🎮 Présentation du projet
 
-Pistol Hand est un mini-jeu d'arcade accessible à tous les niveaux, offrant une expérience simple, amusante et rapide. Inspiré de Smash Bros, le jeu propose une physique cartoonesque agréable, de la musique et une interface intuitive.
+Smash Cube est un mini-jeu d'arcade accessible à tous les niveaux, offrant une expérience simple, amusante et rapide. Inspiré de Smash Bros, le jeu propose une physique cartoonesque agréable, de la musique et une interface intuitive.
 
 ### 🎯 Fonctionnalités principales
 
@@ -28,9 +28,9 @@ Pistol Hand est un mini-jeu d'arcade accessible à tous les niveaux, offrant une
 Chaque joueur incarne un slime mignon avec les contrôles suivants :
 - **Joystick gauche** : Déplacement
 - **Joystick droit** : Visée du pistolet
-- **Bouton 1** : Saut (depuis le sol uniquement)
-- **Bouton 2** : Dash (temps de récupération long)
-- **Bouton 3** : Tir (temps de récupération court)
+- **Bouton 1 (Croix/A)** : Saut (depuis le sol uniquement)
+- **Bouton 2 (R2/RT) + Joystick Gauche** : Dash (temps de récupération long)
+- **Bouton 3 (R1/RB) + Joystick Droit** : Tir (temps de récupération court)
 
 ### 💪 Système de combat
 
