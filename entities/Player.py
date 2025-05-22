@@ -81,24 +81,52 @@ class Player(pygame.sprite.Sprite):
 
         self.pistol = Pistol(self)
 
+
+
+
+
+        self.canDash = True
+        self.isDashing = False
+        self.dashCooldown = 4
+        self.dashCooldownTimer = 0
+        self.dashDuration = 10
+        self.dashTimer = 0
+        self.dashSpeed = 50
+
+    def dash(self, direction):
+        if self.canDash and not self.isDashing and direction != 0:
+            self.isDashing = True
+            self.canDash = False
+            self.dashTimer = 0
+            self.dashDirection = direction
+            self.currentSpeed.y = 0
+            
     def update(self):
         if self.isTakingDamage:
             return
+        # Is Dashing
+        if self.isDashing:
+            self.CurrentFrameDistance.x += self.dashDirection * self.dashSpeed
+            self.dashTimer += 1
+            if self.dashTimer >= self.dashDuration:
+                self.isDashing = False
+            self.CurrentFrameDistance.y += 0 
+        else :
+        
+            # move player at each frame
+            if self.currentSpeed.x > self.max_x_velocity*3:
+                self.CurrentFrameDistance.x += self.max_x_velocity*3
+            else:
+                self.CurrentFrameDistance.x += self.currentSpeed.x
+            self.CurrentFrameDistance.y += self.currentSpeed.y
 
-        # move player at each frame
-        if self.currentSpeed.x > self.max_x_velocity*3:
-            self.CurrentFrameDistance.x += self.max_x_velocity*3
-        else:
-            self.CurrentFrameDistance.x += self.currentSpeed.x
-        self.CurrentFrameDistance.y += self.currentSpeed.y
+            if self.currentSpeed.y > self.max_y_velocity:
+                self.currentSpeed.y = self.max_y_velocity
 
-        if self.currentSpeed.y > self.max_y_velocity:
-            self.currentSpeed.y = self.max_y_velocity
-
-        # make the vector slow down on X axis
-        if not self.wasBumped:
-            applyFriction(self)
-            applyGravity(self)
+            # make the vector slow down on X axis
+            if not self.wasBumped:
+                applyFriction(self)
+                applyGravity(self)
 
         # check if player is colliding with an object
         detectCollison(self)
@@ -114,7 +142,13 @@ class Player(pygame.sprite.Sprite):
 
         self.CurrentFrameDistance = Vector2(0, 0)
 
-        print(self.rect.x, self.rect.y)
+        # Gestion du cooldown du dash
+        if not self.canDash and not self.isDashing:
+            self.dashCooldownTimer += 1
+            if self.dashCooldownTimer >= self.dashCooldown:
+                self.canDash = True
+                self.dashCooldownTimer = 0
+
 
 
     def move(self, direction):

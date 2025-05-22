@@ -20,7 +20,7 @@ def controller(players, control_mode, bullets, events):
                             if event.key == pygame.K_LSHIFT:
                                 player.attack()
                             if event.key == pygame.K_e:
-                                player.currentSpeed.x += 300
+                                player.dash(1)
 
                         # 2nd player key
                         if player.PlayerID == 2:
@@ -29,7 +29,8 @@ def controller(players, control_mode, bullets, events):
                             if event.key == pygame.K_RSHIFT:
                                 player.attack()
                             if event.key == pygame.K_g:
-                                player.currentSpeed.x += 60
+                                player.dash(1)
+
 
 
                 elif control_mode == getPlayer.ControlMode.CONTROLLER and player.PlayerID >= 0:
@@ -39,7 +40,17 @@ def controller(players, control_mode, bullets, events):
                         if event.type == pygame.JOYBUTTONDOWN and event.button == 2 and not player.isAttacking:
                             player.attack()
                         if event.type == pygame.JOYAXISMOTION and event.axis == 5:
-                            player.move(70)
+                            joystick = pygame.joystick.Joystick(player.PlayerID)
+
+                            direction = joystick.get_axis(0)
+
+                            if abs(direction) > 0.5:
+                                if (direction > 0) :
+                                    player.dash(1)
+                                else :
+                                    player.dash(-1)
+
+
                         if event.type == pygame.JOYBUTTONDOWN and ( event.button == 10 or event.button == 5):
                             joystick = pygame.joystick.Joystick(player.PlayerID)
                             dx = joystick.get_axis(2)
