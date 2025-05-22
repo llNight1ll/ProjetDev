@@ -66,8 +66,7 @@ def load_leaderboard(joysticks):
 
 # Create buttons for default resolution
 buttons = [
-    Button("Play with Controller", WIDTH // 2 - 400//2 , 150, 400, 50, play_game_controller),
-    Button("Play with Keyboard", WIDTH // 2 - 400//2, 250, 400, 50, play_game_keyboard),
+    Button("Play", WIDTH // 2 - 400//2, 250, 400, 50, play_game_controller),
     Button("Leaderboard", WIDTH // 2 - 400//2, 350, 400, 50, load_leaderboard),
     Button("Settings", WIDTH // 2 - 200//2, 450, 200, 50, open_settings),
     Button("Quit", WIDTH // 2 - 200//2, 550, 200, 50, quit_game)
