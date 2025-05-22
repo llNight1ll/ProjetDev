@@ -26,6 +26,8 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.health = 3
         self.max_health = 3
+        self.hp = 4
+        self.max_hp = 4
         self.power = 10
         self.x_velocity = 0.5
         self.max_x_velocity = 15
@@ -194,6 +196,7 @@ class Player(pygame.sprite.Sprite):
         self.bumpCooldown = 0
         self.isGrounded = False
         self.isTakingDamage = True
+        self.hp = self.max_hp
         
         self.rect.x = spawn_points[4][0]
         self.rect.y = spawn_points[4][1]

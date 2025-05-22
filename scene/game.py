@@ -61,6 +61,22 @@ def draw_player_ui(screen, players):
         text_rect = text_surface.get_rect(center=(column_x + player_column_width // 2, ui_y + int(screen_height * 0.04)))
         screen.blit(text_surface, text_rect)
 
+
+
+        # Health bar
+        bar_width = int(player_column_width * 0.5)
+        bar_height = int(screen_height * 0.015)
+        bar_x = column_x + (player_column_width - bar_width) // 2
+        bar_y = ui_y + int(screen_height * 0.06)
+
+
+        pygame.draw.rect(screen, (100, 100, 100), (bar_x, bar_y, bar_width, bar_height), border_radius=5)
+
+        health_ratio = max(0, min(player.hp / player.max_hp, 1))
+        filled_width = int(bar_width * health_ratio)
+        pygame.draw.rect(screen, (50, 250, 0), (bar_x, bar_y, filled_width, bar_height), border_radius=5)
+
+
         #Player lives
         life_box_size = int(screen_width * life_box_size_ratio)
         life_box_margin = int(screen_width * life_box_margin_ratio)

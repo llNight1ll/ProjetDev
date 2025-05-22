@@ -65,6 +65,13 @@ def bulletCollision(self, players):
     for player in players:
         if self.rect.colliderect(player.rect) and self.shooter != player.PlayerID:
                 self.kill()
+                player.hp -= 1
+                if player.hp == 0:
+                    player.isTakingDamage = True
+                    player.handleDamage()
+                    player.isTakingDamage = False
+
+
                 break
 def applyGravity(self):
     if self.isTakingDamage:
