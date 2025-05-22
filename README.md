@@ -28,9 +28,10 @@ Smash Cube est un mini-jeu d'arcade accessible à tous les niveaux, offrant une 
 Chaque joueur incarne un slime mignon avec les contrôles suivants :
 - **Joystick gauche** : Déplacement
 - **Joystick droit** : Visée du pistolet
-- **Bouton 1 (Croix/A)** : Saut (depuis le sol uniquement)
+- **Bouton 1 (Croix/A)** : Saut (depuis le sol uniquement) / Selectionner un bouton dans un menu
 - **Bouton 2 (R2/RT) + Joystick Gauche** : Dash (temps de récupération long)
 - **Bouton 3 (R1/RB) + Joystick Droit** : Tir (temps de récupération court)
+- **Fleches directionnelles** : Naviguer dans les menus
 
 ### 💪 Système de combat
 

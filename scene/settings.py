@@ -108,7 +108,33 @@ def settings(screen, SCREEN_WIDTH, joysticks):
         screen.blit(title, (s_Width // 2 - title.get_width() // 2, 100))
 
         vol_label = font.render("Music volume", True, DARK_GRAY)
-        screen.blit(vol_label, (s_Width // 2 - vol_label.get_width() // 2, 230))
+
+        contrl1 = font.render("Left Joystick: Movement  ", True, DARK_GRAY)
+
+        contrl2 = font.render("Right Joystick: Aim the gun  ", True, DARK_GRAY)
+
+        contrl3 = font.render("Button 1 (Cross/A): Jump (only from the ground) / Select a button in the menu ", True, DARK_GRAY)
+
+        contrl4 = font.render("Button 2 (R2/RT) + Left Joystick: Dash (long cooldown)  ", True, DARK_GRAY)
+
+        contrl5 = font.render("Button 3 (R1/RB) + Right Joystick: Shoot (short cooldown)", True, DARK_GRAY)
+
+
+
+
+
+
+        screen.blit(vol_label, (s_Width // 2 - vol_label.get_width() // 2, 170))
+
+        screen.blit(contrl1, (s_Width // 2 - contrl1.get_width() // 2, 200 * 2))
+
+        screen.blit(contrl2, (s_Width // 2 - contrl2.get_width() // 2, 200 * 2 + 10 + contrl1.get_height()))
+
+        screen.blit(contrl3, (s_Width // 2 - contrl3.get_width() // 2, 200 * 2  + 10 + 2*contrl1.get_height()))
+
+        screen.blit(contrl4, (s_Width // 2 - contrl4.get_width() // 2, 200*2 + 10 + 3*contrl1.get_height()))
+
+        screen.blit(contrl5, (s_Width // 2 - contrl5.get_width() // 2, 200*2 + 10 + 4*contrl1.get_height()))
 
         slider.draw(screen)
 
