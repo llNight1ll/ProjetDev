@@ -1,10 +1,7 @@
-import math
 import pygame
-import json
-import os
 
 from entities.Object import map1
-
+from engine.database import add_score
 
 GRAVITY = 1
 FRICTION = 0.90
@@ -126,8 +123,9 @@ def checkEndGame(players):
     return True
 
 
+'''
 def saveScore(winner):        
-    file_path = os.path.join("data", "data.json")
+    file_path = os.path.join("database", "data.json")
     
     try:
         # load json
@@ -147,4 +145,9 @@ def saveScore(winner):
             
     except Exception as e:
         print(f"Error while saving score: {e}")
+'''
+
+def saveScore(winner, playersCount):
+    score = winner.health * playersCount * 100
+    add_score(winner.PlayerID+1, score)
     

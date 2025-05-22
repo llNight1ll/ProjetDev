@@ -196,8 +196,8 @@ def game(screen, clock, joysticks, control_mode):
 
         #print(players[0].rect.x, players[0].rect.y)
     
-        for player in players :
-            print(player.rect.x, player.rect.y)
+        #for player in players :
+        #    print(player.rect.x, player.rect.y)
 
     # find winner
     winner = None
@@ -206,7 +206,7 @@ def game(screen, clock, joysticks, control_mode):
             winner = player
             break
     
-    saveScore(winner)
+    saveScore(winner, len(players))
     # draw end screen
     draw_end_screen(screen, winner, clock, joysticks)
 

@@ -3,12 +3,15 @@ import sys
 import json
 from scene import menu
 from scene.screen import *
+from engine.database import get_leaderboard
+from engine.database import delete_all_scores
 
 def leaderboard(screen, joystick):
     # colors
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
     GRAY = (100, 100, 100)
+    RED = (200, 50, 50)
     
     # Initialisation responsive
     WIDTH, HEIGHT = screen.get_size()
@@ -16,6 +19,7 @@ def leaderboard(screen, joystick):
     title_font = ui["title_font"]
     text_font = ui["text_font"]
     back_button = ui["back_button"]
+    reset_button = ui["reset_button"]
     scale = ui["scale"]
     scale_x = ui["scale_x"]
     scale_y = ui["scale_y"]
@@ -31,6 +35,10 @@ def leaderboard(screen, joystick):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if back_button.collidepoint(event.pos):
                     running = False
+                elif reset_button.collidepoint(event.pos):
+                    delete_all_scores()
+                    # Refresh the screen to show updated scores
+                    screen.fill((50, 50, 50))
 
             elif event.type == VIDEORESIZE:
                 screen = pygame.display.set_mode(event.size, pygame.RESIZABLE)
@@ -38,6 +46,7 @@ def leaderboard(screen, joystick):
                 title_font = ui["title_font"]
                 text_font = ui["text_font"]
                 back_button = ui["back_button"]
+                reset_button = ui["reset_button"]
                 scale = ui["scale"]
                 scale_x = ui["scale_x"]
                 scale_y = ui["scale_y"]
@@ -67,16 +76,12 @@ def leaderboard(screen, joystick):
         screen.blit(title, title_rect)
         
         try:
-            # load json
-            with open('data/data.json', 'r') as f:
-                data = json.load(f)
-            
-            # sort scores
-            sorted_scores = sorted(data["scores"].items(), key=lambda x: x[1], reverse=True)
+            # get scores from database
+            scores = get_leaderboard()
             
             # display scores
             y_offset = 200
-            for player_id, score in sorted_scores:
+            for player_id, total_score, games_played in scores:
                 # player image
                 try:
                     player_image = pygame.image.load(f'assets/player{player_id}.png').convert_alpha()
@@ -88,12 +93,12 @@ def leaderboard(screen, joystick):
                     pass
                 
                 # score text
-                score_text = f"Player {player_id}: {score} win{'s' if score > 1 else ''}"
+                score_text = f"Player {player_id}: {total_score} wins in {games_played} games"
                 text = text_font.render(score_text, True, WHITE)
                 text_rect = text.get_rect(center=(WIDTH // 2 + 100 * scale_x, y_offset * scale_y))
                 screen.blit(text, text_rect)
                 
-                y_offset += 80 *scale_y
+                y_offset += 80 * scale_y
                 
         except Exception as e:
             error_text = text_font.render("Error while loading scores", True, WHITE)
@@ -105,6 +110,12 @@ def leaderboard(screen, joystick):
         back_text = text_font.render("Back", True, WHITE)
         back_text_rect = back_text.get_rect(center=back_button.center)
         screen.blit(back_text, back_text_rect)
+        
+        # reset button
+        pygame.draw.rect(screen, RED, reset_button, border_radius=10)
+        reset_text = text_font.render("Reset Scores", True, WHITE)
+        reset_text_rect = reset_text.get_rect(center=reset_button.center)
+        screen.blit(reset_text, reset_text_rect)
         
         pygame.display.flip()
         clock.tick(60)
@@ -121,8 +132,9 @@ def resize_elements(screen_size):
     title_font = pygame.font.Font(None, int(72 * scale))
     text_font = pygame.font.Font(None, int(36 * scale))
 
-    # Bouton "Back" responsive
-    back_button = pygame.Rect(width // 2 - int(100 * scale), height - int(100 * scale), int(200 * scale), int(50 * scale))
+    # Boutons responsive
+    back_button = pygame.Rect(width // 2 - int(250 * scale), height - int(100 * scale), int(200 * scale), int(50 * scale))
+    reset_button = pygame.Rect(width // 2 + int(50 * scale), height - int(100 * scale), int(200 * scale), int(50 * scale))
 
     return {
         "scale": scale,
@@ -131,6 +143,7 @@ def resize_elements(screen_size):
         "title_font": title_font,
         "text_font": text_font,
         "back_button": back_button,
+        "reset_button": reset_button,
         "width": width,
         "height": height
     }
