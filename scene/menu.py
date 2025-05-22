@@ -1,6 +1,6 @@
 import pygame
 import sys
-import json
+
 from scene import getPlayer
 from scene.settings import settings
 from scene.leaderboard import leaderboard
@@ -12,13 +12,15 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT), RESIZABLE)
 class Button:
     def __init__(self, text, x, y, width, height, callback):
         self.text = text
+        self.base_font_size = 32
+        self.font = pygame.font.Font(None, self.base_font_size)
         self.rect = pygame.Rect(x, y, width, height)
         self.color = GRAY
         self.callback = callback
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect, border_radius=10)
-        text_surface = font.render(self.text, True, WHITE)
+        text_surface = self.font.render(self.text, True, WHITE)
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
 
@@ -35,8 +37,14 @@ class Button:
         if self.rect.collidepoint(pos):
             self.callback(joysticks)
     
-    def modifyRes(self, size):
-        self.rect = pygame.Rect(size[0] // 2 -  self.rect.width// 2, self.rect.y, self.rect.width, self.rect.height)
+    def modifyRes(self, size,  baseWidth, baseHeight):
+
+        scale_x = size[0] / baseWidth
+        scale_y = size[1] / baseHeight
+        self.rect = pygame.Rect(self.rect.left * scale_x, self.rect.top * scale_y, self.rect.width * scale_x, self.rect.height * scale_y)
+        scale = min(scale_x, scale_y)
+        self.font = pygame.font.Font(None, int((self.base_font_size + 16) * scale))
+
         
 
 # Fonctions des boutons
@@ -54,7 +62,7 @@ def quit_game():
     sys.exit()
 
 def load_leaderboard(joysticks):
-    leaderboard(screen)
+    leaderboard(screen ,joysticks)
 
 # Create buttons for default resolution
 buttons = [
@@ -69,7 +77,6 @@ buttonSelected = 0
 buttons[buttonSelected].isHoverController(True)
 
 def selectButton(action) :
-    print("appuie " + str(action))
     global buttonSelected
     if action == 0:
         buttons[buttonSelected].callback(joysticks)
@@ -97,11 +104,13 @@ def selectButton(action) :
             buttons[buttonSelected].isHoverController(True)
 
     
-    
+baseWidth, baseHeight = screen.get_size()  
 
 def menu():
     global screen
+    global baseWidth, baseHeight
     running = True
+
     
 
     while running:
@@ -121,8 +130,9 @@ def menu():
             elif event.type == VIDEORESIZE:
                 screen = pygame.display.set_mode(event.size, RESIZABLE)
                 for button in buttons:
-                    button.modifyRes(event.size)
-    
+                    button.modifyRes(event.size,  baseWidth, baseHeight)
+
+                baseWidth, baseHeight = event.size
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 for button in buttons:
                     button.check_click(event.pos)
