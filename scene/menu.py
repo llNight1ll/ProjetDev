@@ -66,10 +66,10 @@ def load_leaderboard(joysticks):
 
 # Create buttons for default resolution
 buttons = [
-    Button("Play", WIDTH // 2 - 400//2, 250, 400, 50, play_game_controller),
-    Button("Leaderboard", WIDTH // 2 - 400//2, 350, 400, 50, load_leaderboard),
-    Button("Settings", WIDTH // 2 - 200//2, 450, 200, 50, open_settings),
-    Button("Quit", WIDTH // 2 - 200//2, 550, 200, 50, quit_game)
+    Button("Play", WIDTH // 2 - 400//2, 150, 400, 50, play_game_controller),
+    Button("Leaderboard", WIDTH // 2 - 400//2, 250, 400, 50, load_leaderboard),
+    Button("Settings", WIDTH // 2 - 200//2, 350, 200, 50, open_settings),
+    Button("Quit", WIDTH // 2 - 200//2, 450, 200, 50, quit_game)
 ]
 
 buttonSelected = 0
@@ -140,12 +140,10 @@ def menu():
                 joystick = pygame.joystick.Joystick(event.device_index)
                 joystick.init()
                 joysticks[joystick.get_instance_id()] = joystick
-                print(f"Manette connectée : {joystick.get_name()}")
 
             elif event.type == pygame.JOYDEVICEREMOVED:
                 if event.instance_id in joysticks:
                     del joysticks[event.instance_id]
-                    print("Manette déconnectée")
                 
             elif event.type == pygame.JOYBUTTONDOWN and event.button == 0:
                 selectButton(0)

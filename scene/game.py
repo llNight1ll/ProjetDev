@@ -56,7 +56,7 @@ def draw_player_ui(screen, players):
         screen.blit(skin_icon, skin_rect)
 
         #Player name
-        player_text = f"Player {player.PlayerID}"
+        player_text = f"Player {player.defaultID}"
         text_surface = font.render(player_text, True, (0, 0, 0))
         text_rect = text_surface.get_rect(center=(column_x + player_column_width // 2, ui_y + int(screen_height * 0.04)))
         screen.blit(text_surface, text_rect)
@@ -101,6 +101,7 @@ def game(screen, clock, joysticks, control_mode):
 
 
     players = []
+    defaultId = 0
 
     #Create the 2 keyboard players
     if control_mode == getPlayer.ControlMode.KEYBOARD:
@@ -108,10 +109,10 @@ def game(screen, clock, joysticks, control_mode):
         players.append(Player.Player(2))
     else:
         for js in joysticks:
-            players.append(Player.Player(joysticks[js].get_instance_id()))
-    
+            players.append(Player.Player(joysticks[js].get_instance_id(), defaultId))
+            defaultId+=1
     for player in players:
-        print(f"Joueur créé avec l'ID: {player.PlayerID}")
+        print(f"Joueur créé avec l'ID: {player.defaultID}")
 
 
     running = True
@@ -169,7 +170,7 @@ def game(screen, clock, joysticks, control_mode):
 
                 player.pistol.draw(screen)
                 # player text above player
-                player_text = f"Player {player.PlayerID}"
+                player_text = f"Player {player.defaultID}"
                 text_surface = player_font.render(player_text, True, (255, 255, 255))
                 text_rect = text_surface.get_rect(center=(player.rect.centerx, player.rect.top - 20))
                 screen.blit(text_surface, text_rect)
@@ -269,7 +270,7 @@ def draw_end_screen(screen, winner, clock, joysticks):
             screen.blit(winner_image, winner_rect)
             
             # winner text
-            winner_text = f"Player {winner.PlayerID} has won !"
+            winner_text = f"Player {winner.defaultID} has won !"
             text_surface = text_font.render(winner_text, True, (255, 255, 255))
             text_rect = text_surface.get_rect(center=(screen_width // 2, screen_height // 2 + 100))
             screen.blit(text_surface, text_rect)

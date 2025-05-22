@@ -22,8 +22,9 @@ spawn_points = [
 ]
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, ID):
+    def __init__(self, ID, defaultID):
         super().__init__()
+        self.defaultID = defaultID
         self.health = 3
         self.max_health = 3
         self.hp = 4
@@ -45,7 +46,7 @@ class Player(pygame.sprite.Sprite):
 
         self.CurrentFrameDistance = Vector2(0, 0)
 
-        self.skin_number = ID + 1
+        self.skin_number = defaultID + 1
         self.image_idle = pygame.transform.scale_by(pygame.image.load(f'assets/player{self.skin_number}.png').convert(), 0.07)
 
         self.frame_index = 0
@@ -64,7 +65,7 @@ class Player(pygame.sprite.Sprite):
         self.frame_width = 64
         self.frame_height = 64
 
-        self.spawnPointID = ID
+        self.spawnPointID = defaultID
         self.rect.x = spawn_points[self.spawnPointID][0]
         self.rect.y = spawn_points[self.spawnPointID][1] - self.rect.height
 

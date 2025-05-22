@@ -9,9 +9,13 @@ from engine.database import delete_all_scores
 def leaderboard(screen, joystick):
     # colors
     WHITE = (255, 255, 255)
-    BLACK = (0, 0, 0)
-    GRAY = (100, 100, 100)
+    GRAY = (70, 70, 70)
+    DARK_GRAY = (100, 100, 100)
+
     RED = (200, 50, 50)
+    selectedButton = 0
+    button1_colors = (DARK_GRAY, GRAY)
+    button2_colors = (RED, DARK_GRAY)
     
     # Initialisation responsive
     WIDTH, HEIGHT = screen.get_size()
@@ -64,9 +68,32 @@ def leaderboard(screen, joystick):
                     del joysticks[event.instance_id]
                     print("Manette déconnectée")
                 
-            elif event.type == pygame.JOYBUTTONDOWN and event.button == 0:
+            elif event.type == pygame.JOYBUTTONDOWN and event.button == 0 and selectedButton == 0:
                 running = False
+            elif event.type == pygame.JOYBUTTONDOWN and event.button == 0 and selectedButton == 1:
+                delete_all_scores()
+                # Refresh the screen to show updated scores
+                screen.fill((50, 50, 50))
 
+            elif event.type == pygame.JOYBUTTONDOWN and event.button == 14:
+                selectedButton +=1
+                if selectedButton > 1 :
+                    selectedButton = 1
+
+            elif event.type == pygame.JOYBUTTONDOWN and event.button == 13:
+                selectedButton -=1
+                if selectedButton < 0 :
+                    selectedButton = 0
+
+            elif event.type == pygame.JOYHATMOTION:
+                if event.value == (1, 0):
+                    selectedButton -=1
+                    if selectedButton < 0 :
+                        selectedButton = 0
+                elif event.value == (-1, 0):
+                    selectedButton -=1
+                    if selectedButton < 0 :
+                        selectedButton = 0
         # background
         screen.fill((50, 50, 50))
         
@@ -93,9 +120,9 @@ def leaderboard(screen, joystick):
                     pass
                 
                 # score text
-                score_text = f"Player {player_id}: {total_score} wins in {games_played} games"
+                score_text = f"Player {player_id}: {total_score} points in {games_played} games"
                 text = text_font.render(score_text, True, WHITE)
-                text_rect = text.get_rect(center=(WIDTH // 2 + 100 * scale_x, y_offset * scale_y))
+                text_rect = text.get_rect(topleft=(WIDTH // 2 + 10 * scale_x, y_offset * scale_y - 10))
                 screen.blit(text, text_rect)
                 
                 y_offset += 80 * scale_y
@@ -106,13 +133,13 @@ def leaderboard(screen, joystick):
             screen.blit(error_text, error_rect)
         
         # back button
-        pygame.draw.rect(screen, GRAY, back_button, border_radius=10)
+        pygame.draw.rect(screen, button1_colors[selectedButton], back_button, border_radius=10)
         back_text = text_font.render("Back", True, WHITE)
         back_text_rect = back_text.get_rect(center=back_button.center)
         screen.blit(back_text, back_text_rect)
         
         # reset button
-        pygame.draw.rect(screen, RED, reset_button, border_radius=10)
+        pygame.draw.rect(screen, button2_colors[selectedButton], reset_button, border_radius=10)
         reset_text = text_font.render("Reset Scores", True, WHITE)
         reset_text_rect = reset_text.get_rect(center=reset_button.center)
         screen.blit(reset_text, reset_text_rect)
