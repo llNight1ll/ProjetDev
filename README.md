@@ -1,4 +1,4 @@
-# Pistol Hand
+# Smash Cube
 
 Un jeu d'arcade multijoueur inspiré de Smash Bros, développé par Sami Hmida et Mathieu Lienard.
 
