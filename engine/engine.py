@@ -96,3 +96,11 @@ def checkPlayerCollision(Players):
                         other_player.wasBumped = True
 
 
+def checkEndGame(players):
+    alivePlayersCount = 0
+    for player in players:
+        if not player.isDead:
+            alivePlayersCount += 1
+            if alivePlayersCount > 1:
+                return False
+    return True

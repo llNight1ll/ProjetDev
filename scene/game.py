@@ -1,4 +1,5 @@
 import pygame
+import sys
 
 from entities import Player
 
@@ -6,13 +7,16 @@ from engine.controller import controller
 
 from engine.engine import checkPlayerCollision
 from engine.engine import bulletCollision
-
+from engine.engine import checkEndGame
 
 from entities import Player
 
 from scene import getPlayer
 
 from entities.Object import map1
+
+from scene import menu
+
 
 bullets = pygame.sprite.Group()
 
@@ -157,7 +161,9 @@ def game(screen, clock, joysticks, control_mode):
 
         checkPlayerCollision(players)
 
-
+        # check if there is only one player alive
+        if checkEndGame(players):
+            running = False
 
         # Dessiner l'UI des joueurs
         draw_player_ui(screen, players)
@@ -167,3 +173,72 @@ def game(screen, clock, joysticks, control_mode):
         clock.tick(60)  # 60 FPS
 
         #print(players[0].rect.x, players[0].rect.y)
+    
+    # find winner
+    winner = None
+    for player in players:
+        if not player.isDead:
+            winner = player
+            break
+    
+    # draw end screen
+    draw_end_screen(screen, winner, clock)
+
+def draw_end_screen(screen, winner, clock):
+    screen_width, screen_height = screen.get_size()
+    
+    # font
+    title_font = pygame.font.Font(None, 72)
+    text_font = pygame.font.Font(None, 36)
+    
+    button_width = 200
+    button_height = 50
+    button_x = (screen_width - button_width) // 2
+    button_y = screen_height - 100
+    button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
+    
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if button_rect.collidepoint(event.pos):
+                    running = False
+                    return
+        
+        # background
+        screen.fill((0, 0, 0))
+        
+        # title
+        title_text = "Fin de partie"
+        title_surface = title_font.render(title_text, True, (255, 255, 255))
+        title_rect = title_surface.get_rect(center=(screen_width // 2, 100))
+        screen.blit(title_surface, title_rect)
+        
+        if winner:
+            # winner image
+            winner_image = pygame.image.load(f'assets/player{winner.skin_number}.png').convert_alpha()
+            scale_factor = 0.2 * screen_width / winner_image.get_width()
+            winner_image = pygame.transform.scale_by(winner_image, scale_factor)
+            winner_rect = winner_image.get_rect(center=(screen_width // 2, screen_height // 2 - 50))
+            screen.blit(winner_image, winner_rect)
+            
+            # winner text
+            winner_text = f"Le joueur {winner.PlayerID} a gagné !"
+            text_surface = text_font.render(winner_text, True, (255, 255, 255))
+            text_rect = text_surface.get_rect(center=(screen_width // 2, screen_height // 2 + 100))
+            screen.blit(text_surface, text_rect)
+        
+        # back to menu button
+        pygame.draw.rect(screen, (100, 100, 100), button_rect, border_radius=10)
+        button_text = "Retour au menu"
+        button_surface = text_font.render(button_text, True, (255, 255, 255))
+        button_text_rect = button_surface.get_rect(center=button_rect.center)
+        screen.blit(button_surface, button_text_rect)
+        
+        pygame.display.flip()
+        clock.tick(60)
+    
+    menu.menu()
