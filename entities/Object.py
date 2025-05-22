@@ -46,11 +46,11 @@ print(platform2.object.left,platform2.object.top)
 print(platform3.object.left,platform3.object.top)
 
 
-wall1 =  Object((100,100,225), pygame.Rect(-20, 0, 20, 720), 5) 
-wall2 =  Object((100,100,225), pygame.Rect(1280, 0, 20, 720), 5) 
+wall1 =  Object((100,100,225), pygame.Rect(-100, 0, 100, 820), 5) 
+wall2 =  Object((100,100,225), pygame.Rect(1280, 0, 100, 820), 5) 
 
-ground =  Object((100,100,225), pygame.Rect(-20, 720 , 1300, 20), 5) 
-roof =  Object((100,100,225), pygame.Rect(-20, -20, 1300, 20), 5) 
+ground =  Object((100,100,225), pygame.Rect(-100, 720, 1420, 40), 5) 
+roof =  Object((100,100,225), pygame.Rect(-100, -40, 1420, 40), 5) 
 
 
 

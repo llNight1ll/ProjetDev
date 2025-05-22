@@ -148,7 +148,7 @@ def menu():
                 elif event.value == (0, 1):
                     selectButton(-1)
 
-        print(event)
+        #print(event)
     
     pygame.quit()
     sys.exit()

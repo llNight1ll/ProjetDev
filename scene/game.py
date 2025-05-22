@@ -206,7 +206,7 @@ def draw_end_screen(screen, winner, clock):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(event.pos):
                     running = False
-                    return
+                    menu.menu()
         
         # background
         screen.fill((0, 0, 0))
@@ -240,5 +240,3 @@ def draw_end_screen(screen, winner, clock):
         
         pygame.display.flip()
         clock.tick(60)
-    
-    menu.menu()
