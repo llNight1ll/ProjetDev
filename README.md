@@ -98,3 +98,8 @@ Organisation en 4 dossiers principaux :
    - Manettes Nintendo Switch
    - Optimisations
    - Améliorations visuelles
+  
+## 🖼️ Image
+
+<img width="1472" height="872" alt="image" src="https://github.com/user-attachments/assets/124df40d-d6eb-4cdf-bc7c-fdde3d7c232b" />
+
