@@ -22,6 +22,7 @@ Smash Cube est un mini-jeu d'arcade accessible à tous les niveaux, offrant une 
   - Détection des manettes
   - Visualisation du leaderboard
   - Paramètres sonores
+  - Fenêtre entierement responsive
 
 ### 🎲 Gameplay
 
